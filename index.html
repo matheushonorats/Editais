@@ -1,0 +1,4526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscrições, Chamamentos e Editais - Turismo</title>
+  
+  <!-- Fontes Premium - Google Fonts (Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Ícones - FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* --------------------------------------------------
+       SISTEMA DE DESIGN & VARIÁVEIS CSS (PREMIUM)
+       -------------------------------------------------- */
+    :root {
+      --primary: #1e3b8b;       /* Azul Escuro Marítimo/Turismo */
+      --primary-light: #2563eb; /* Azul Acentuado */
+      --primary-rgb: 30, 59, 139;
+      
+      --accent: #0f766e;        /* Teal Turismo */
+      --accent-light: #0d9488;
+      --accent-rgb: 15, 118, 110;
+      
+      /* Cores de Status */
+      --status-aberto: #10b981;      /* Verde */
+      --status-andamento: #3b82f6;  /* Azul */
+      --status-suspenso: #f59e0b;   /* Laranja */
+      --status-concluido: #64748b;  /* Cinza */
+      
+      /* Cores Dinâmicas dos Ícones de Arquivos */
+      --color-pdf: #ef4444;    /* Vermelho PDF */
+      --bg-pdf: rgba(239, 68, 68, 0.08);
+      
+      --color-word: #2563eb;   /* Azul Word */
+      --bg-word: rgba(37, 99, 235, 0.08);
+      
+      --color-excel: #16a34a;  /* Verde Excel */
+      --bg-excel: rgba(22, 163, 74, 0.08);
+      
+      --color-link: #0d9488;   /* Teal Web Link */
+      --bg-link: rgba(13, 148, 136, 0.08);
+      
+      /* Neutras */
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      --shadow-premium: 0 20px 25px -5px rgba(30, 59, 139, 0.04), 0 10px 10px -5px rgba(30, 59, 139, 0.01);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* --------------------------------------------------
+       RESET & CONFIGURAÇÕES BÁSICAS
+       -------------------------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Ocultar barra de rolagem interna se estiver rodando dentro de um iframe, 
+       mas manter a rolagem funcional por mousewheel/touch caso o redimensionamento falhe */
+    body.inside-iframe, html.inside-iframe {
+      -ms-overflow-style: none !important;  /* IE/Edge */
+      scrollbar-width: none !important;     /* Firefox */
+      overflow-y: auto !important;
+    }
+    body.inside-iframe::-webkit-scrollbar, html.inside-iframe::-webkit-scrollbar {
+      display: none !important;             /* Safari/Chrome */
+    }
+    
+    /* Garantir que o indicador de clique nativo do calendário cubra 100% da área do seletor */
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+    
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      transition: var(--transition);
+    }
+    
+    /* --------------------------------------------------
+       ESTRUTURA DE CONTAINER PRINCIPAL
+       -------------------------------------------------- */
+    .app-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* --------------------------------------------------
+       HEADER DO PORTAL (PREMIUM)
+       -------------------------------------------------- */
+    .portal-header {
+      background: #3464ab;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 18px 0;
+      margin-bottom: 32px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .portal-header-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .logo-img {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+    }
+    
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .logo-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    /* BOTÃO GERENCIAR: OCULTO POR PADRÃO */
+    .btn-admin {
+      display: none; /* Revelado apenas por ?admin=true ou clique duplo secreto */
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btn-admin:hover {
+      background: #ffffff;
+      color: #3464ab;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    /* --------------------------------------------------
+       HERO & BUSCA INTELIGENTE
+       -------------------------------------------------- */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 40px 24px;
+      background: linear-gradient(135deg, rgba(30, 59, 139, 0.03) 0%, rgba(15, 118, 110, 0.03) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.04) 0%, rgba(255, 255, 255, 0) 70%);
+      top: -150px;
+      right: -150px;
+      z-index: 0;
+    }
+    
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 28px auto;
+    }
+    
+    .search-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .search-bar {
+      width: 100%;
+      padding: 16px 24px 16px 54px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 1rem;
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    
+    .search-bar:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), var(--shadow-md);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      font-size: 1.1rem;
+      transition: var(--transition);
+    }
+    
+    .search-bar:focus + .search-icon {
+      color: var(--primary-light);
+    }
+    
+    /* Ajustes compactos para a nova posição da busca pública */
+    .search-wrapper-public {
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .search-bar-compact {
+      padding: 11px 20px 11px 44px !important;
+      font-size: 0.92rem !important;
+      border-radius: var(--radius-md) !important;
+    }
+    
+    .search-icon-compact {
+      left: 16px !important;
+      font-size: 0.95rem !important;
+    }
+    
+    /* Subtítulo elegante para edital nos Destaques */
+    .highlight-subevent {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: -4px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    /* Cores e Pulsares Dinâmicos de Status nos Destaques */
+    .highlight-badge.status-aberto {
+      background: rgba(16, 185, 129, 0.1) !important;
+      color: #10b981 !important;
+      animation: pulse-green 2s infinite !important;
+    }
+    .highlight-badge.status-andamento {
+      background: rgba(59, 130, 246, 0.1) !important;
+      color: #3b82f6 !important;
+      animation: none !important;
+    }
+    .highlight-badge.status-suspenso {
+      background: rgba(245, 158, 11, 0.1) !important;
+      color: #f59e0b !important;
+      animation: none !important;
+    }
+    .highlight-badge.status-concluido {
+      background: rgba(100, 116, 139, 0.1) !important;
+      color: #64748b !important;
+      animation: none !important;
+    }
+    
+    @keyframes pulse-green {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    
+    /* --------------------------------------------------
+       ÚLTIMAS ATUALIZAÇÕES / DESTAQUES
+       -------------------------------------------------- */
+    .highlights-section {
+      margin-bottom: 40px;
+    }
+    
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title i {
+      color: var(--accent);
+    }
+    
+    .highlights-grid {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE 10+ */
+      padding: 12px 4px; /* Pequeno espaçamento vertical para não cortar a sombra ao focar/pairar */
+      margin: -12px -4px;
+    }
+    
+    .highlights-grid::-webkit-scrollbar {
+      display: none; /* Chrome, Safari e Opera */
+    }
+    
+    .highlights-carousel-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.85rem;
+      z-index: 10;
+      cursor: pointer;
+      transition: var(--transition);
+      opacity: 0; /* Invisível por padrão, surge no hover do wrapper */
+      pointer-events: none;
+    }
+    
+    .highlights-carousel-wrapper:hover .carousel-control {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .carousel-control:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .carousel-control.prev {
+      left: -19px;
+    }
+    
+    .carousel-control.next {
+      right: -19px;
+    }
+    
+    @media (max-width: 768px) {
+      .carousel-control {
+        opacity: 0.95 !important;
+        pointer-events: auto !important;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid var(--border);
+      }
+      .carousel-control.prev {
+        left: 6px;
+      }
+      .carousel-control.next {
+        right: 6px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .carousel-control {
+        display: none !important; /* Esconde em celulares menores */
+      }
+    }
+    
+    .highlight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 0 0 360px; /* Mantém o tamanho original de 360px sem encolher no flexbox */
+      scroll-snap-align: start;
+    }
+    
+    .highlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-left-color: var(--accent-light);
+    }
+    
+    @media (max-width: 480px) {
+      .highlight-card {
+        flex: 0 0 290px; /* Fica um pouco mais estreito em celulares de tela pequena */
+        padding: 16px;
+      }
+    }
+    
+    .highlight-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      animation: pulse-light 2s infinite;
+    }
+    
+    @keyframes pulse-light {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
+      70% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(15, 118, 110, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+    }
+    
+    .highlight-cat {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    
+    .highlight-event {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .highlight-doc-title {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-weight: 600;
+      background: #f8fafc;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .highlight-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+      margin-top: auto;
+    }
+    
+    .btn-download-highlight {
+      color: var(--accent);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+    
+    .btn-download-highlight:hover {
+      color: var(--accent-light);
+      text-decoration: underline;
+    }
+    
+    /* ESTILOS DE ÍCONES DINÂMICOS */
+    .icon-pdf { color: var(--color-pdf) !important; background: var(--bg-pdf) !important; }
+    .icon-word { color: var(--color-word) !important; background: var(--bg-word) !important; }
+    .icon-excel { color: var(--color-excel) !important; background: var(--bg-excel) !important; }
+    .icon-link { color: var(--color-link) !important; background: var(--bg-link) !important; }
+
+    /* --------------------------------------------------
+       NAVEGAÇÃO POR ANO & FILTROS (TABS)
+       -------------------------------------------------- */
+    .filter-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    
+    /* Abas de Anos */
+    .year-tabs-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    
+    .year-tab-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    
+    .year-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .tab-pill {
+      padding: 10px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .tab-pill:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+    }
+    
+    .tab-pill.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+    }
+    
+    /* Filtro por Categoria */
+    .category-filters-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    
+    .category-filters {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .filter-chip {
+      padding: 6px 14px;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    
+    .filter-chip:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+    
+    .filter-chip.active {
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--accent);
+      border-color: rgba(15, 118, 110, 0.2);
+    }
+    
+    /* --------------------------------------------------
+       CONTAINER DE EDITAIS E EVENT CARDS
+       -------------------------------------------------- */
+    .editais-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    
+    .event-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .event-card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--border-hover);
+    }
+    
+    /* Cabeçalho do Card */
+    .event-header {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      cursor: pointer;
+    }
+    
+    .event-header-left {
+      flex: 1;
+    }
+    
+    .event-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .event-category-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+    }
+    
+    .event-year-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      background: var(--primary);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+    }
+    
+    /* Eventos em Destaque */
+    .event-card.has-destaque {
+      border-left: 4px solid #f59e0b !important;
+      background: linear-gradient(to right, rgba(245, 158, 11, 0.02), var(--bg-card)) !important;
+    }
+    
+    .event-destaque-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #d97706;
+      background: rgba(245, 158, 11, 0.12);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    /* Badges de Status */
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .status-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    
+    .status-aberto {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--status-aberto);
+    }
+    
+    .status-aberto::before {
+      background: var(--status-aberto);
+      animation: pulse-dot 1.5s infinite;
+    }
+    
+    .status-andamento {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--status-andamento);
+    }
+    
+    .status-andamento::before {
+      background: var(--status-andamento);
+    }
+    
+    .status-suspenso {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--status-suspenso);
+    }
+    
+    .status-suspenso::before {
+      background: var(--status-suspenso);
+    }
+    
+    .status-concluido {
+      background: rgba(100, 116, 139, 0.1);
+      color: var(--status-concluido);
+    }
+    
+    .status-concluido::before {
+      background: var(--status-concluido);
+    }
+    
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.6; }
+    }
+    
+    .event-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    
+    .event-subtitle {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-light);
+      line-height: 1.4;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    
+    /* Layout dinâmico do Prazo na visão pública */
+    .event-deadline-row {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    
+    .event-deadline-row i {
+      color: var(--accent);
+    }
+    
+    .event-description {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+    
+    .event-header-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    
+    .event-card:hover .event-header-right {
+      background: rgba(30, 59, 139, 0.05);
+      color: var(--primary);
+      border-color: rgba(30, 59, 139, 0.1);
+    }
+    
+    .event-header-right i {
+      transition: transform 0.3s ease;
+    }
+    
+    .event-card.expanded .event-header-right i {
+      transform: rotate(180deg);
+    }
+    
+    /* Corpo Expansível (Documentos) */
+    .event-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #fafbfd;
+    }
+    
+    .event-card.expanded .event-body {
+      max-height: 1500px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .event-body-content {
+      padding: 24px;
+    }
+    
+    .event-full-description {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+    }
+    
+    .docs-list-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .docs-table {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .doc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      gap: 16px;
+    }
+    
+    .doc-row:hover {
+      border-color: rgba(15, 118, 110, 0.3);
+      background: rgba(15, 118, 110, 0.01);
+      transform: translateX(4px);
+    }
+    
+    .doc-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+    
+    .doc-icon {
+      font-size: 1.4rem;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .doc-details {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .doc-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    
+    .doc-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 2px;
+    }
+    
+    .doc-date {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .btn-download-doc {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+    
+    .btn-download-doc:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+    }
+    
+    /* --------------------------------------------------
+       ESTADOS DE CARREGAMENTO & VAZIO
+       -------------------------------------------------- */
+    .loading-state {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    
+    .spinner {
+      border: 4px solid rgba(30, 59, 139, 0.1);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border-left-color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--text-muted);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    
+    .empty-state h3 {
+      font-size: 1.2rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    
+    /* --------------------------------------------------
+       VISÃO ADMINISTRATIVA (PAINEL INTERNO)
+       -------------------------------------------------- */
+    #admin-view {
+      display: none;
+    }
+    
+    .admin-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+    }
+    
+    .admin-bar-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .admin-bar-title i {
+      color: var(--accent-light);
+    }
+    
+    .btn-sair {
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .btn-sair:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+    
+    /* Menu de Abas Administrativas */
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 8px;
+    }
+    
+    .admin-tab-btn {
+      padding: 10px 20px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .admin-tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    
+    .admin-tab-btn:hover:not(.active) {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+    
+    /* Layouts de Sub-painéis */
+    .admin-tab-content {
+      display: none;
+    }
+    
+    .admin-tab-content.active {
+      display: block;
+    }
+    
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    
+    @media (min-width: 992px) {
+      .admin-grid {
+        grid-template-columns: 380px 1fr;
+      }
+    }
+    
+    .admin-panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .admin-panel-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Formulários */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      color: var(--text-main);
+      background-color: #f8fafc;
+      transition: var(--transition);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      margin-top: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .btn-submit:hover {
+      background: var(--accent-light);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn-cancel {
+      width: 100%;
+      padding: 10px;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+    }
+    
+    .btn-cancel:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+    
+    /* Tabelas Administrativas */
+    .table-responsive {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      margin-top: 12px;
+    }
+    
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    
+    .admin-table th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+    }
+    
+    .admin-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    
+    .admin-table tbody tr:hover {
+      background: #fafbfd;
+    }
+    
+    .admin-table-title {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .admin-table-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    
+    /* Cabeçalho de Grupo Retrátil na Tabela Admin */
+    .admin-table-group-header {
+      background: #f1f5f9 !important;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+    .admin-table-group-header:hover {
+      background: #e2e8f0 !important;
+    }
+    .admin-table-group-header td {
+      padding: 10px 16px !important;
+      font-size: 0.85rem;
+      border-bottom: 2px solid var(--border) !important;
+      border-top: 1px solid var(--border) !important;
+    }
+    .group-toggle-icon {
+      margin-right: 8px;
+      transition: transform 0.2s ease;
+      color: var(--accent);
+      display: inline-block;
+    }
+    .group-toggle-icon.collapsed {
+      transform: rotate(-90deg);
+    }
+    .admin-table-badge-count {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 12px;
+      margin-left: 8px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    /* Dropdown de Autocomplete Personalizado Premium */
+    .form-group {
+      position: relative; /* Necessário para posicionamento absoluto do dropdown */
+    }
+    .custom-autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      display: none;
+      margin-top: 4px;
+    }
+    .custom-autocomplete-item {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--text-dark);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .custom-autocomplete-item:hover {
+      background: var(--bg-light);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .admin-actions-cell {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .btn-table-action {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+    }
+    
+    .btn-table-edit {
+      color: var(--primary-light);
+      background: rgba(37, 99, 235, 0.05);
+    }
+    
+    .btn-table-edit:hover {
+      background: var(--primary-light);
+      color: #ffffff;
+      border-color: var(--primary-light);
+    }
+    
+    .btn-table-delete {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+    
+    .btn-table-delete:hover {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+    }
+    
+    /* --------------------------------------------------
+       MODAL DE AUTENTICAÇÃO (LOGIN ADMIN)
+       -------------------------------------------------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      padding: 20px 24px;
+      background: var(--primary);
+      color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    
+    .btn-close-modal {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.2rem;
+    }
+    
+    .btn-close-modal:hover {
+      color: #ffffff;
+    }
+    
+    .modal-body {
+      padding: 24px;
+    }
+    
+    .password-input-wrapper {
+      position: relative;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+    
+    .password-toggle:hover {
+      color: var(--text-muted);
+    }
+    
+    /* --------------------------------------------------
+       NOTIFICAÇÕES TOAST (FLUTUANTES)
+       -------------------------------------------------- */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 350px;
+      width: 100%;
+    }
+    
+    .toast {
+      padding: 16px 20px;
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      border-left: 4px solid var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 0.9rem;
+      transform: translateY(20px);
+      opacity: 0;
+      animation: toast-in 0.3s forwards;
+    }
+    
+    @keyframes toast-in {
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .toast.success { border-left-color: var(--status-aberto); }
+    .toast.error { border-left-color: #ef4444; }
+    
+    .toast i { font-size: 1.1rem; }
+    .toast.success i { color: var(--status-aberto); }
+    .toast.error i { color: #ef4444; }
+    
+    /* --------------------------------------------------
+       RODAPÉ LIMPO E ATALHO DE ACESSO SECRETO
+       -------------------------------------------------- */
+    .portal-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+      margin-top: 80px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    
+    .secret-trigger {
+      display: inline-block;
+      user-select: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    
+    .secret-trigger:hover {
+      color: var(--primary-light);
+    }
+    
+    /* --------------------------------------------------
+       RESPONSIVIDADE MÓVEL
+       -------------------------------------------------- */
+    @media (max-width: 768px) {
+      .portal-header-wrapper {
+        flex-direction: column;
+        text-align: center;
+      }
+      .logo-container {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .hero-title {
+        font-size: 1.8rem;
+      }
+      .highlights-grid {
+        gap: 16px;
+      }
+      .event-header {
+        padding: 16px;
+      }
+      .event-title {
+        font-size: 1.1rem;
+      }
+      .doc-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .btn-download-doc {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* --------------------------------------------------
+       SISTEMA DE PAGINAÇÃO PREMIUM
+       -------------------------------------------------- */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+      padding: 12px 0;
+    }
+    
+    .pagination-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    
+    .pagination-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f1f5f9;
+      color: var(--text-light);
+    }
+    
+    .pagination-info {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST DE ALERTA -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="portal-header">
+    <div class="portal-header-wrapper">
+      <div class="logo-container">
+        <img id="logo-img" class="logo-img" style="display: none;" alt="Logo">
+        <div class="logo-text">
+          <span id="logo-title" class="logo-title">Secretaria Municipal de Turismo</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-toggle-admin" class="btn-admin" onclick="abrirModalLogin()">
+          <i class="fa-solid fa-lock-open"></i> Gerenciar Editais
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    
+    <!-- --------------------------------------------------
+         VISÃO PÚBLICA (CIDADÃO)
+         -------------------------------------------------- -->
+    <main id="public-view">
+      
+      <!-- HERO & PESQUISA -->
+      <section class="hero-section">
+        <h1 id="hero-title" class="hero-title">Inscrições, Chamamentos e Editais</h1>
+        <p class="hero-subtitle">Consulte os regulamentos, chamadas públicas de eventos e homologações oficiais de nossa secretaria de forma simples e rápida.</p>
+      </section>
+
+      <!-- DESTAQUES / ÚLTIMAS ATUALIZAÇÕES AUTOMÁTICAS -->
+      <section id="highlights-container" class="highlights-section" style="display: none;">
+        <h2 class="section-title"><i class="fa-solid fa-bullhorn"></i> Últimas Atualizações</h2>
+        <div class="highlights-carousel-wrapper">
+          <button class="carousel-control prev" onclick="scrollCarousel(-1)" aria-label="Anterior">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div id="highlights-grid" class="highlights-grid">
+            <!-- Gerado dinamicamente no JS (Os 3 mais recentes no sistema) -->
+          </div>
+          <button class="carousel-control next" onclick="scrollCarousel(1)" aria-label="Próximo">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DE DOCUMENTOS PUBLICADOS E FILTROS -->
+      <section class="documents-section">
+        <!-- Linha do Título e da Busca -->
+        <div class="documents-header-row">
+          <h2 class="section-title" style="margin-bottom: 0;"><i class="fa-solid fa-folder-open"></i> Documentos Publicados</h2>
+          <div class="search-wrapper-public">
+            <input type="text" id="search-input" class="search-bar search-bar-compact" placeholder="Buscar nos documentos publicados..." oninput="buscarPublico()">
+            <i class="fa-solid fa-magnifying-glass search-icon search-icon-compact"></i>
+          </div>
+        </div>
+
+        <!-- CONTAINER DE FILTROS -->
+        <div class="filter-container" style="margin-top: 20px; margin-bottom: 24px;">
+          <!-- Anos -->
+          <div class="year-tabs-wrapper">
+            <span class="year-tab-label">Ano:</span>
+            <div id="year-tabs" class="year-tabs">
+              <!-- Gerado dinamicamente -->
+            </div>
+          </div>
+          
+          <!-- Categorias -->
+          <div class="category-filters-wrapper">
+            <div id="category-filters" class="category-filters">
+              <!-- Gerado dinamicamente -->
+            </div>
+          </div>
+        </div>
+
+        <div id="editais-loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Carregando editais, por favor aguarde...</p>
+        </div>
+        <div id="editais-container" class="editais-container" style="display: none;">
+          <!-- Gerado dinamicamente -->
+        </div>
+        <div id="public-pagination" class="pagination-container" style="display: none;">
+          <!-- Controles de página -->
+        </div>
+        <div id="editais-empty" class="empty-state" style="display: none;">
+          <i class="fa-regular fa-folder-open"></i>
+          <h3>Nenhum edital encontrado</h3>
+          <p>Tente ajustar sua busca ou selecionar outro ano/categoria.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- --------------------------------------------------
+         VISÃO ADMINISTRATIVA (PAINEL INTERNO)
+         -------------------------------------------------- -->
+    <main id="admin-view">
+      
+      <!-- Barra superior administrativa -->
+      <div class="admin-bar">
+        <div class="admin-bar-title">
+          <i class="fa-solid fa-gears"></i> Painel de Controle Administrativo
+          <span id="user-badge" style="font-size:0.8rem; background:rgba(255,255,255,0.15); padding: 2px 8px; border-radius: var(--radius-sm); margin-left:10px;"></span>
+        </div>
+        <button class="btn-sair" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Sair do Painel</button>
+      </div>
+
+      <!-- Abas Administrativas -->
+      <div id="admin-sub-tabs" class="admin-tabs" style="display: none;">
+        <button id="tab-editais-btn" class="admin-tab-btn active" onclick="switchAdminTab('editais')">
+          <i class="fa-solid fa-folder-open"></i> Gerenciar Editais
+        </button>
+        <button id="tab-usuarios-btn" class="admin-tab-btn" onclick="switchAdminTab('usuarios')">
+          <i class="fa-solid fa-users-gear"></i> Gerenciar Usuários
+        </button>
+      </div>
+
+      <!-- SUB-PAINEL 1: EDITATIS/DOCUMENTOS -->
+      <div id="admin-tab-editais" class="admin-tab-content active">
+        <div class="admin-grid">
+          <!-- Formulário (Lançamento de Documento) -->
+          <div class="admin-panel-card">
+            <h3 id="form-title" class="admin-panel-card-title"><i class="fa-solid fa-plus"></i> Novo Lançamento</h3>
+            
+            <form id="form-edital" onsubmit="salvarEdital(event)">
+              <input type="hidden" id="edit-id">
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-ano">Ano</label>
+                <input type="number" id="edit-ano" class="form-control" placeholder="Ex: 2026" required min="2000" max="2100">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-categoria">Tema / Categoria (Selecione um existente ou digite um novo)</label>
+                <input type="text" id="edit-categoria" class="form-control" placeholder="Selecione na lista ou digite..." required autocomplete="off">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-nome-evento">Nome do Evento (Nome amigável de destaque, ex: 9º Encontro de Autos Antigos)</label>
+                <input type="text" id="edit-nome-evento" class="form-control" placeholder="Selecione na lista ou digite..." required oninput="detectarPreenchimentoNomeEvento()" autocomplete="off">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-evento">Evento / Nome do Edital (Selecione um existente ou digite um novo)</label>
+                <input type="text" id="edit-evento" class="form-control" placeholder="Selecione na lista ou digite..." required oninput="detectarPreenchimentoEvento()" autocomplete="off">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-descricao-evento">Descrição do Evento</label>
+                <textarea id="edit-descricao-evento" class="form-control" placeholder="Escreva um breve resumo..." required></textarea>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="edit-status">Status do Evento</label>
+                  <select id="edit-status" class="form-control" onchange="calcularHelperPrazo()">
+                    <option value="Aberto">Aberto</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Suspenso">Suspenso</option>
+                    <option value="Concluído">Concluído</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="edit-destaque">Últimas Atualizações?</label>
+                  <select id="edit-destaque" class="form-control">
+                    <option value="NÃO">NÃO</option>
+                    <option value="SIM">SIM</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- NOVO CAMPO: PRAZO FINAL INSCRIÇÕES -->
+              <div class="form-group">
+                <label class="form-label" for="edit-prazo-final">Prazo Final Inscrições (Opcional)</label>
+                <div id="prazo-wrapper" style="position: relative; display: flex; align-items: center;">
+                  <!-- Campo de texto visivel (sempre oculto para forcar calendario) -->
+                  <input type="text" id="edit-prazo-final" class="form-control" placeholder="Ex: 25/05/2026 18:00" readonly style="position: relative; z-index: 1; display: none;">
+                  <!-- Display visual (clicavel, abre o calendario) -->
+                  <div id="prazo-display" onclick="ativarCalendarioPrazo()" style="flex: 1; padding: 10px 40px 10px 14px; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; min-height: 42px; display: flex; align-items: center; font-size: 0.95rem; color: var(--text-dark); position: relative; z-index: 1; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                    <span id="prazo-display-text" style="color: var(--text-muted);">Clique para selecionar data e horário...</span>
+                  </div>
+                  <!-- Icone do calendario (nao clicavel, apenas visual, posicionado a direita) -->
+                  <div style="position: absolute; right: 12px; height: 100%; display: flex; align-items: center; justify-content: center; width: 24px; color: var(--accent); pointer-events: none; z-index: 3;">
+                    <i class="fa-regular fa-calendar-days" style="font-size: 1.1rem;"></i>
+                  </div>
+                  <!-- Input nativo invisivel cobrindo o display inteiro (abre o calendario) -->
+                  <input type="datetime-local" id="edit-prazo-final-picker" onchange="sincronizarPickerComInput()" onmousedown="sincronizarInputComPicker()" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 2; border: none; background: transparent;">
+                </div>
+              </div>
+              
+              <!-- NOVO CAMPO: PRAZO FINAL VIGÊNCIA -->
+              <div class="form-group">
+                <label class="form-label" for="edit-vigencia">Prazo Final Vigência (Opcional)</label>
+                <div id="vigencia-wrapper" style="position: relative; display: flex; align-items: center;">
+                  <!-- Campo de texto visivel (sempre oculto para forcar calendario) -->
+                  <input type="text" id="edit-vigencia" class="form-control" placeholder="Ex: 31/12/2026 18:00" readonly style="position: relative; z-index: 1; display: none;">
+                  <!-- Display visual (clicavel, abre o calendario) -->
+                  <div id="vigencia-display" onclick="ativarCalendarioVigencia()" style="flex: 1; padding: 10px 40px 10px 14px; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; min-height: 42px; display: flex; align-items: center; font-size: 0.95rem; color: var(--text-dark); position: relative; z-index: 1; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                    <span id="vigencia-display-text" style="color: var(--text-muted);">Clique para selecionar a vigência final...</span>
+                  </div>
+                  <!-- Icone do calendario (nao clicavel, apenas visual, posicionado a direita) -->
+                  <div style="position: absolute; right: 12px; height: 100%; display: flex; align-items: center; justify-content: center; width: 24px; color: var(--accent); pointer-events: none; z-index: 3;">
+                    <i class="fa-solid fa-hourglass-half" style="font-size: 1.1rem;"></i>
+                  </div>
+                  <!-- Input nativo invisivel cobrindo o display inteiro (abre o calendario) -->
+                  <input type="datetime-local" id="edit-vigencia-picker" onchange="sincronizarPickerVigenciaComInput()" onmousedown="sincronizarInputVigenciaComPicker()" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 2; border: none; background: transparent;">
+                </div>
+                <div id="prazo-helper-info" style="margin-top: 8px; font-size: 0.82rem; font-weight: 600; display: none; padding: 6px 12px; border-radius: var(--radius-sm);"></div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-titulo-doc">Título do Documento</label>
+                <input type="text" id="edit-titulo-doc" class="form-control" placeholder="Ex: Edital Completo de Abertura" required autocomplete="off">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="edit-link-doc">Link do Documento (Armazenamento Externo)</label>
+                <input type="url" id="edit-link-doc" class="form-control" placeholder="https://..." required>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="edit-data">Data de Publicação</label>
+                  <div id="data-wrapper" style="position: relative; display: flex; align-items: center;">
+                    <!-- Campo de texto visivel (sempre oculto para forcar calendario) -->
+                    <input type="text" id="edit-data" class="form-control" placeholder="22/05/2026" readonly style="position: relative; z-index: 1; display: none;">
+                    <!-- Display visual (clicavel, abre o calendario) -->
+                    <div id="data-display" onclick="ativarCalendarioData()" style="flex: 1; padding: 10px 40px 10px 14px; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; min-height: 42px; display: flex; align-items: center; font-size: 0.95rem; color: var(--text-dark); position: relative; z-index: 1; transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                      <span id="data-display-text" style="color: var(--text-muted);">Clique para selecionar a data...</span>
+                    </div>
+                    <!-- Icone do calendario (nao clicavel, apenas visual, posicionado a direita) -->
+                    <div style="position: absolute; right: 12px; height: 100%; display: flex; align-items: center; justify-content: center; width: 24px; color: var(--accent); pointer-events: none; z-index: 3;">
+                      <i class="fa-regular fa-calendar" style="font-size: 1.1rem;"></i>
+                    </div>
+                    <!-- Input nativo invisivel cobrindo o display inteiro (abre o calendario) -->
+                    <input type="date" id="edit-data-picker" onchange="sincronizarPickerDataComInput()" onmousedown="sincronizarInputDataComPicker()" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; pointer-events: auto; z-index: 2; border: none; background: transparent;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="edit-ordem">Ordem Exibição</label>
+                  <input type="number" id="edit-ordem" class="form-control" placeholder="1" min="1" value="1">
+                </div>
+              </div>
+              
+              <button type="submit" id="btn-salvar" class="btn-submit">Salvar Registro</button>
+              <button type="button" id="btn-cancelar-edicao" class="btn-cancel" style="display: none;" onclick="resetarFormulario()">Cancelar Edição</button>
+            </form>
+          </div>
+          
+          <!-- Lista de Documentos Gerenciáveis (Tabela) -->
+          <div class="admin-panel-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+              <h3 class="admin-panel-card-title" style="margin: 0; border: none; padding: 0;"><i class="fa-solid fa-list-check"></i> Documentos Cadastrados</h3>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <select id="admin-group-by" class="form-control" style="max-width: 200px; padding: 6px 12px; background: #ffffff; font-size: 0.85rem;" onchange="aoMudarAgrupamentoAdmin()">
+                  <option value="nenhum">Visualização Plana</option>
+                  <option value="evento" selected>Agrupar por Evento</option>
+                  <option value="categoria">Agrupar por Tema/Categoria</option>
+                </select>
+                <input type="text" id="admin-search-input" class="form-control" style="max-width: 200px; padding: 6px 12px; background: #ffffff; font-size: 0.85rem;" placeholder="Pesquisar..." oninput="filtrarTabelaAdmin()">
+              </div>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Ano/Tema</th>
+                    <th>Edital / Documento</th>
+                    <th>Status</th>
+                    <th style="width: 90px; text-align: center;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                  <!-- Gerado dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+            <!-- Dynamic pagination for admin panel -->
+            <div id="admin-pagination" class="pagination-container" style="display: none;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUB-PAINEL 2: USUÁRIOS (EXCLUSIVO PARA ADMIN/MATHEUS) -->
+      <div id="admin-tab-usuarios" class="admin-tab-content">
+        <div class="admin-grid">
+          <!-- Form Usuário -->
+          <div class="admin-panel-card">
+            <h3 id="form-user-title" class="admin-panel-card-title"><i class="fa-solid fa-user-plus"></i> Novo Usuário</h3>
+            <form id="form-usuario" onsubmit="salvarUsuario(event)">
+              <div class="form-group">
+                <label class="form-label" for="user-username">Usuário (Nome de Login)</label>
+                <input type="text" id="user-username" class="form-control" placeholder="Nome de usuário" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="user-password">Senha</label>
+                <input type="text" id="user-password" class="form-control" placeholder="Senha pessoal" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="user-level">Nível de Permissão</label>
+                <select id="user-level" class="form-control">
+                  <option value="EDITOR">EDITOR (Apenas cadastra editais)</option>
+                  <option value="ADMIN">ADMIN (Controle total de usuários e editais)</option>
+                </select>
+              </div>
+              <button type="submit" id="btn-salvar-user" class="btn-submit">Criar Usuário</button>
+              <button type="button" id="btn-cancelar-user" class="btn-cancel" style="display: none;" onclick="resetarFormUsuario()">Cancelar Edição</button>
+            </form>
+          </div>
+          
+          <!-- Lista de Usuários -->
+          <div class="admin-panel-card">
+            <h3 class="admin-panel-card-title"><i class="fa-solid fa-users"></i> Usuários Registrados</h3>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Usuário</th>
+                    <th>Senha</th>
+                    <th>Permissão</th>
+                    <th>Status</th>
+                    <th style="width: 90px; text-align: center;">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="user-table-body">
+                  <!-- Gerado dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RODAPÉ LIMPO E ATALHO DE ACESSO SECRETO -->
+    <footer class="portal-footer">
+      <span class="secret-trigger" ondblclick="revelarAdminAcesso()">Desenvolvido por SETUR São Sebastião/SP</span>
+    </footer>
+
+  </div>
+
+  <!-- MODAL DE LOGIN (ADMIN) -->
+  <div id="login-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Acesso Administrativo</h3>
+        <button class="btn-close-modal" onclick="fecharModalLogin()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="realizarLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="login-username">Nome de Usuário</label>
+            <input type="text" id="login-username" class="form-control" placeholder="Digite seu usuário..." required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-senha">Senha</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="login-senha" class="form-control" placeholder="Digite sua senha..." required>
+              <button type="button" class="password-toggle" onclick="toggleSenhaVisualizacao()">
+                <i id="password-toggle-icon" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" style="margin-top: 8px;">Entrar no Painel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PRIMEIRO ACESSO (SENHA PROVISÓRIA) -->
+  <div id="primeiro-acesso-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header" style="background: var(--accent);">
+        <h3>Primeiro Acesso - Nova Senha</h3>
+        <button class="btn-close-modal" onclick="fecharModalPrimeiroAcesso()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+          Esta é a primeira vez que você acessa o sistema. Por favor, defina uma nova senha pessoal segura para sua conta.
+        </p>
+        <form onsubmit="salvarNovaSenhaPrimeiroAcesso(event)">
+          <input type="hidden" id="pa-usuario">
+          <input type="hidden" id="pa-senha-provisoria">
+          
+          <div class="form-group">
+            <label class="form-label" for="pa-nova-senha">Nova Senha</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="pa-nova-senha" class="form-control" placeholder="Mínimo de 4 caracteres..." required>
+              <button type="button" class="password-toggle" onclick="toggleSenhaPA('pa-nova-senha', 'pa-toggle-icon-1')">
+                <i id="pa-toggle-icon-1" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="pa-confirmar-senha">Confirmar Nova Senha</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="pa-confirmar-senha" class="form-control" placeholder="Repita a nova senha..." required>
+              <button type="button" class="password-toggle" onclick="toggleSenhaPA('pa-confirmar-senha', 'pa-toggle-icon-2')">
+                <i id="pa-toggle-icon-2" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          
+          <button type="submit" id="btn-submit-pa" class="btn-submit" style="background: var(--accent); margin-top: 8px;">Definir Senha e Entrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS PRINCIPAL (MÓDULOS & EVENTOS) -->
+  <script>
+    // --------------------------------------------------
+    // CONTROLE DE ESTADO DA APLICAÇÃO (STATE)
+    // --------------------------------------------------
+    const state = {
+      db: [],              // Lista flat de editais buscados do Sheet
+      configs: {},         // Configurações do portal
+      anos: [],            // Anos únicos disponíveis
+      categorias: [],      // Categorias únicas do ano ativo
+      anoSelecionado: '',  // Ano atualmente filtrado
+      categoriaSelecionada: 'Todos', // Categoria ativamente filtrada
+      
+      // Credenciais Ativas (Multi-usuário)
+      usuarioLogado: '',   
+      senhaLogado: '',     
+      nivelLogado: '',     
+      
+      // Banco de usuários do sistema
+      usersDb: [],         
+      modoEdicaoUser: false,
+
+      // Paginação e Agrupamento
+      paginaAtualPublica: 1,
+      paginaAtualAdmin: 1,
+      itensPorPaginaPublica: 5,         // 5 eventos por página
+      itensPorPaginaAdminFlat: 15,       // 15 documentos por página na visão plana
+      itensPorPaginaAdminGrouped: 15,    // 15 grupos por página na visão agrupada
+      collapsedGroups: {}
+    };
+
+    // --------------------------------------------------
+    // CARREGAMENTO INICIAL
+    // --------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      carregarDadosServidor();
+      verificarUrlParams();
+      iniciarObservadorAltura();
+      configurarTodosDropdownsCustomizados();
+    });
+
+    function verificarUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('admin') === 'true' || params.get('painel') === '1') {
+        revelarAdminAcesso();
+      }
+    }
+
+    function revelarAdminAcesso() {
+      const btn = document.getElementById('btn-toggle-admin');
+      btn.style.display = 'flex';
+      
+      if (!state.usuarioLogado) {
+        abrirModalLogin();
+      }
+    }
+
+    function carregarDadosServidor() {
+      exibirLoader(true);
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler(onDadosCarregados)
+          .withFailureHandler(onErroCarregamento)
+          .obterDadosCompletos();
+      } else {
+        console.warn("Ambiente local detectado. Carregando dados simulados.");
+        setTimeout(() => {
+          onDadosCarregados({
+            sucesso: true,
+            configs: {
+              NOME_SECRETARIA: "Secretaria Municipal de Turismo",
+              TITULO_PORTAL: "Inscrições, Chamamentos e Editais"
+            },
+            editais: [
+              { id: "ED-1", ano: "2026", categoria: "Turismo", evento: "Credenciamento de Guias de Turismo 2026", descricaoEvento: "Inscrições abertas para guias locais habilitados atuarem nas rotas do município.", statusEvento: "Aberto", tituloDocumento: "Edital Completo de Abertura (PDF)", linkDocumento: "https://example.com/edital.pdf", dataPublicacao: "21/05/2026", destaque: "SIM", ordem: "1", prazoFinal: "28/05/2026 18:00" },
+              { id: "ED-2", ano: "2026", categoria: "Turismo", evento: "Credenciamento de Guias de Turismo 2026", descricaoEvento: "Inscrições abertas para guias locais habilitados atuarem nos roteiros.", statusEvento: "Aberto", tituloDocumento: "Ficha Cadastral em Anexo (Word)", linkDocumento: "https://example.com/ficha.docx", dataPublicacao: "22/05/2026", destaque: "NÃO", ordem: "2", prazoFinal: "28/05/2026 18:00" },
+              { id: "ED-3", ano: "2026", categoria: "Eventos", evento: "Festival Gastronômico de Primavera", descricaoEvento: "Credenciamento de bares e restaurantes para stands de alimentação.", statusEvento: "Em Andamento", tituloDocumento: "Resultado das Propostas Homologadas", linkDocumento: "https://example.com/resultado.xlsx", dataPublicacao: "23/05/2026", destaque: "SIM", ordem: "1", prazoFinal: "30/05/2026 23:59" },
+              { id: "ED-4", ano: "2026", categoria: "Eventos", evento: "Inscrições encerradas da Feira Comercial de Páscoa", descricaoEvento: "Inscrição online para comércio do centro participar dos stands de páscoa.", statusEvento: "Aberto", tituloDocumento: "Resultado Final", linkDocumento: "https://example.com/resultado.pdf", dataPublicacao: "19/05/2026", destaque: "NÃO", ordem: "1", prazoFinal: "19/05/2026 18:00" }, // EXPLICADAMENTE EXPIRADO (Mudará para Concluído)
+              { id: "ED-5", ano: "2025", categoria: "Turismo", evento: "Plano de Roteiros da Rota da Uva", descricaoEvento: "Divulgação do plano final das agências de viagens.", statusEvento: "Concluído", tituloDocumento: "Documento Técnico do Plano", linkDocumento: "https://example.com/plano.pdf", dataPublicacao: "10/11/2025", destaque: "NÃO", ordem: "1", prazoFinal: "" } // Sem Prazo
+            ]
+          });
+        }, 1000);
+      }
+    }
+
+    function onDadosCarregados(resposta) {
+      exibirLoader(false);
+      
+      if (!resposta.sucesso) {
+        showToast(resposta.mensagem || "Erro ao carregar os dados do servidor.", "error");
+        return;
+      }
+
+      state.db = resposta.editais;
+      state.configs = resposta.configs;
+      
+      atualizarIdentidadeVisual();
+      processarAnos();
+      renderizarDestaques();
+      renderizarTabsAnos();
+      selecionarAnoPadrao();
+      atualizarDatalistEventos();
+      atualizarDatalistCategorias();
+      atualizarDatalistNomesEventos();
+      
+      if (state.usuarioLogado) {
+        renderizarTabelaAdmin();
+      }
+    }
+
+    function onErroCarregamento(erro) {
+      exibirLoader(false);
+      showToast("Falha de conexão com a planilha: " + erro.toString(), "error");
+    }
+
+    // --------------------------------------------------
+    // PARSER & RESOLVEDOR DINÂMICO DE STATUS POR PRAZO
+    // --------------------------------------------------
+    
+    /**
+     * Analisa data de prazo no formato dd/MM/yyyy HH:mm ou dd/MM/yyyy
+     */
+    function parsePrazoFinal(dataStr) {
+      if (!dataStr || String(dataStr).trim() === '') return null;
+      
+      try {
+        const parts = String(dataStr).trim().split(' ');
+        const dateParts = parts[0].split('/');
+        if (dateParts.length !== 3) return null;
+        
+        const day = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const year = parseInt(dateParts[2], 10);
+        
+        let hour = 23;
+        let min = 59;
+        
+        if (parts.length === 2) {
+          const timeParts = parts[1].split(':');
+          if (timeParts.length >= 2) {
+            hour = parseInt(timeParts[0], 10);
+            min = parseInt(timeParts[1], 10);
+          }
+        }
+        
+        return new Date(year, month, day, hour, min).getTime();
+      } catch (err) {
+        return null;
+      }
+    }
+
+    /**
+     * Resolve dinamicamente o status do edital baseado no prazo final
+     * priorizando overrides manuais de Concluído/Suspenso.
+     */
+    function resolverStatusEdital(statusManual, prazoFinalStr, vigenciaStr) {
+      // 1. Overrides manuais
+      if (statusManual === 'Suspenso' || statusManual === 'Concluído') {
+        return statusManual;
+      }
+      
+      const agora = new Date().getTime();
+      
+      // 2. Se houver vigência, verifica se já expirou (conclui automaticamente)
+      const vigenciaTimestamp = parsePrazoFinal(vigenciaStr);
+      if (vigenciaTimestamp !== null) {
+        if (agora > vigenciaTimestamp) {
+          return 'Concluído'; // Vigência expirada -> Concluído automaticamente
+        }
+      }
+      
+      // 3. Se houver prazo final de inscrições, verifica se já expirou (passa para Em Andamento)
+      const prazoTimestamp = parsePrazoFinal(prazoFinalStr);
+      if (prazoTimestamp !== null) {
+        if (agora > prazoTimestamp) {
+          // Se estava "Aberto" e o prazo expirou, muda automaticamente para "Em Andamento" (Fase de Seleção)
+          if (statusManual === 'Aberto') {
+            return 'Em Andamento';
+          }
+        }
+      }
+      
+      // 4. Caso contrário, mantém o status ativo selecionado
+      return statusManual;
+    }
+
+    // --------------------------------------------------
+    // CARROSSEL: NAVEGAÇÃO DE DESTAQUES (SETAS)
+    // --------------------------------------------------
+    function scrollCarousel(direcao) {
+      const grid = document.getElementById('highlights-grid');
+      if (grid) {
+        // Rola 1 card completo (360px) + gap (20px) = 380px por clique
+        const scrollAmount = 380 * direcao;
+        grid.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // --------------------------------------------------
+    // CARROSSEL: CONTROLE DE VISIBILIDADE DAS SETAS
+    // --------------------------------------------------
+    function atualizarVisibilidadeSetasCarrossel() {
+      const grid = document.getElementById('highlights-grid');
+      const prevBtn = document.querySelector('.carousel-control.prev');
+      const nextBtn = document.querySelector('.carousel-control.next');
+      if (grid && prevBtn && nextBtn) {
+        const isOverflowing = grid.scrollWidth > grid.clientWidth + 2;
+        if (isOverflowing) {
+          prevBtn.style.setProperty('display', '', 'important');
+          nextBtn.style.setProperty('display', '', 'important');
+        } else {
+          prevBtn.style.setProperty('display', 'none', 'important');
+          nextBtn.style.setProperty('display', 'none', 'important');
+        }
+      }
+    }
+
+    // --------------------------------------------------
+    // REDIMENSIONAMENTO DINÂMICO PARA INTEGRAR NO IFRAME
+    // --------------------------------------------------
+    function iniciarObservadorAltura() {
+      // Detecta se a aplicação está rodando dentro de um iframe
+      if (window.self !== window.top) {
+        document.body.classList.add('inside-iframe');
+        document.documentElement.classList.add('inside-iframe');
+      }
+
+      const reportHeight = () => {
+        // Usa o scrollHeight do body para capturar a altura real
+        const height = document.body.scrollHeight;
+        
+        // Multi-payloads para compatibilidade total com qualquer receptor no site hospedeiro
+        const payload1 = {
+          tipo: 'resize',
+          altura: height,
+          height: height
+        };
+        const payload2 = {
+          tipo: 'resize-iframe',
+          altura: height,
+          height: height
+        };
+
+        // Envia para window.parent (caso seja iframe simples)
+        if (window.parent && window.parent.postMessage) {
+          window.parent.postMessage(payload1, '*');
+          window.parent.postMessage(payload2, '*');
+        }
+        // Envia para window.top (caso de duplo iframe do Google Apps Script)
+        if (window.top && window.top !== window.parent && window.top.postMessage) {
+          window.top.postMessage(payload1, '*');
+          window.top.postMessage(payload2, '*');
+        }
+      };
+
+      // ResizeObserver reativo moderno
+      if (typeof ResizeObserver !== 'undefined') {
+        const observer = new ResizeObserver(() => {
+          reportHeight();
+        });
+        observer.observe(document.body);
+      } else {
+        // Fallbacks para navegadores legados
+        window.addEventListener('resize', reportHeight);
+        window.addEventListener('load', reportHeight);
+      }
+
+      // Adiciona disparo preventivo em cliques (ex: ao expandir accordions ou tabs)
+      window.addEventListener('click', () => {
+        setTimeout(reportHeight, 100);
+        setTimeout(reportHeight, 250);
+        setTimeout(reportHeight, 450); // cobre o término da transição de 400ms do accordion
+      });
+      
+      // Ajusta as setas e envia altura imediatamente
+      window.addEventListener('resize', atualizarVisibilidadeSetasCarrossel);
+      atualizarVisibilidadeSetasCarrossel();
+      reportHeight();
+    }
+
+    // --------------------------------------------------
+    // AUXILIARES DE ÍCONES DINÂMICOS DE ARQUIVOS
+    // --------------------------------------------------
+    function obterIconeArquivo(link, titulo) {
+      const url = String(link || '').toLowerCase().trim();
+      const title = String(titulo || '').toLowerCase().trim();
+      
+      // 1. Check EXCEL keywords / extensions first
+      if (
+        url.endsWith('.xls') || url.endsWith('.xlsx') || url.endsWith('.csv') ||
+        url.includes('.xls?') || url.includes('.xlsx?') || url.includes('.csv?') ||
+        url.includes('docs.google.com/spreadsheets') ||
+        title.includes('excel') || title.includes('planilha') || title.includes('tabela') || title.includes('cronograma') || title.includes('anexo') || title.includes('valores')
+      ) {
+        return { icon: 'fa-regular fa-file-excel', colorClass: 'icon-excel' };
+      }
+      
+      // 2. Check WORD keywords / extensions
+      if (
+        url.endsWith('.doc') || url.endsWith('.docx') ||
+        url.includes('.doc?') || url.includes('.docx?') ||
+        url.includes('docs.google.com/document') ||
+        title.includes('word') || title.includes('documento') || title.includes('ficha') || title.includes('form') || title.includes('formulario') || title.includes('formulário')
+      ) {
+        return { icon: 'fa-regular fa-file-word', colorClass: 'icon-word' };
+      }
+      
+      // 3. Check PDF keywords / extensions
+      if (
+        url.endsWith('.pdf') || url.includes('.pdf?') ||
+        title.includes('pdf') || title.includes('edital') || title.includes('chamamento') || title.includes('regulamento') || title.includes('termo') || title.includes('homologacao') || title.includes('homologação') || title.includes('resultado')
+      ) {
+        return { icon: 'fa-regular fa-file-pdf', colorClass: 'icon-pdf' };
+      }
+      
+      // 4. Check for Google Drive generic links
+      if (url.includes('drive.google.com') || url.includes('dropbox.com') || url.includes('onedrive.')) {
+        return { icon: 'fa-solid fa-cloud-arrow-down', colorClass: 'icon-link' };
+      }
+      
+      // 5. Fallback is standard Web Link
+      return { icon: 'fa-solid fa-globe', colorClass: 'icon-link' };
+    }
+
+    // --------------------------------------------------
+    // RENDERIZADORES DA PÁGINA PÚBLICA
+    // --------------------------------------------------
+    
+    function exibirLoader(mostrar) {
+      const loader = document.getElementById('editais-loading');
+      const container = document.getElementById('editais-container');
+      if (mostrar) {
+        loader.style.display = 'block';
+        container.style.display = 'none';
+      } else {
+        loader.style.display = 'none';
+        container.style.display = 'block';
+      }
+    }
+
+    function atualizarIdentidadeVisual() {
+      if (state.configs.NOME_SECRETARIA) {
+        document.getElementById('logo-title').innerText = state.configs.NOME_SECRETARIA;
+      }
+      if (state.configs.TITULO_PORTAL) {
+        document.getElementById('hero-title').innerText = state.configs.TITULO_PORTAL;
+      }
+      
+      const logoImg = document.getElementById('logo-img');
+      const defaultLogo = "https://www.saosebastiao.sp.gov.br/images/header-logo3c.png";
+      const configLogo = state.configs.LOGO_URL;
+      
+      // Se não houver logo configurada, ou se for a imagem antiga provisória do Unsplash, força a oficial
+      if (!configLogo || configLogo.trim() === "" || configLogo.includes("unsplash.com")) {
+        logoImg.src = defaultLogo;
+      } else {
+        logoImg.src = configLogo;
+      }
+      logoImg.style.display = 'block';
+    }
+
+    function processarAnos() {
+      const anosSet = new Set(state.db.map(item => item.ano));
+      state.anos = Array.from(anosSet).sort((a, b) => b - a);
+    }
+
+    function selecionarAnoPadrao() {
+      if (state.anos.length > 0) {
+        selecionarAno(state.anos[0]);
+      } else {
+        renderizarListaEditais([]);
+      }
+    }
+
+    /**
+     * Exibe as últimas atualizações (Destaques) automaticamente com base nas regras:
+     * 1. Apenas itens marcados como Destaque/Últimas Atualizações ("SIM").
+     * 2. Se houver prazo final, exibe até 30 dias após esse prazo final (encerramento).
+     * 3. Se não houver prazo final, exibe até 30 dias após a data de publicação.
+     */
+    function renderizarDestaques() {
+      const highlightsContainer = document.getElementById('highlights-container');
+      const grid = document.getElementById('highlights-grid');
+      
+      if (state.db.length === 0) {
+        highlightsContainer.style.display = 'none';
+        return;
+      }
+
+      const parseDateStr = (dStr) => {
+        if (!dStr) return 0;
+        const parts = dStr.split('/');
+        if (parts.length === 3) {
+          return new Date(parseInt(parts[2].trim(), 10), parseInt(parts[1].trim(), 10) - 1, parseInt(parts[0].trim(), 10)).getTime();
+        }
+        return 0;
+      };
+
+      const agoraTimestamp = new Date().getTime();
+      const limite30DiasMs = 30 * 24 * 60 * 60 * 1000;
+
+      // Filtra os destaques que estão dentro da janela ativa de 30 dias
+      const itensDestaqueAtivos = state.db.filter(item => {
+        // Apenas se o campo Últimas Atualizações (Destaque) for "SIM"
+        if (!item.destaque || item.destaque.toUpperCase().trim() !== 'SIM') {
+          return false;
+        }
+
+        let baseTimestamp = null;
+        if (item.prazoFinal && item.prazoFinal.trim() !== '') {
+          // Se houver encerramento (prazo final), o limite é 30 dias após o encerramento
+          baseTimestamp = parsePrazoFinal(item.prazoFinal);
+        } else {
+          // Se não houver encerramento, o limite é 30 dias após a data de publicação
+          baseTimestamp = parsePrazoFinal(item.dataPublicacao);
+        }
+
+        if (!baseTimestamp) return false;
+
+        const expiracaoTimestamp = baseTimestamp + limite30DiasMs;
+        return agoraTimestamp <= expiracaoTimestamp;
+      });
+
+      if (itensDestaqueAtivos.length === 0) {
+        highlightsContainer.style.display = 'none';
+        return;
+      }
+
+      // Ordena por data de publicação decrescente (mais recentes primeiro) e ID decrescente
+      const maisRecentes = [...itensDestaqueAtivos].sort((a, b) => {
+        const tA = parseDateStr(a.dataPublicacao);
+        const tB = parseDateStr(b.dataPublicacao);
+        if (tB !== tA) return tB - tA;
+        return b.id.localeCompare(a.id);
+      }).slice(0, 8); // Mostra até 8 destaques ativos no carrossel
+
+      highlightsContainer.style.display = 'block';
+      grid.innerHTML = '';
+      
+      maisRecentes.forEach(item => {
+        const iconData = obterIconeArquivo(item.linkDocumento, item.tituloDocumento);
+        
+        // Calcula status resolvido para os Destaques
+        const statusResolvido = resolverStatusEdital(item.statusEvento, item.prazoFinal, item.vigencia);
+        
+        let statusClass = 'status-aberto';
+        if (statusResolvido === 'Em Andamento') statusClass = 'status-andamento';
+        else if (statusResolvido === 'Suspenso') statusClass = 'status-suspenso';
+        else if (statusResolvido === 'Concluído') statusClass = 'status-concluido';
+        
+        // Colore a borda esquerda do card de acordo com o status
+        let cardColorStyle = '';
+        if (statusResolvido === 'Aberto') {
+          cardColorStyle = 'border-left: 4px solid #10b981;';
+        } else if (statusResolvido === 'Em Andamento') {
+          cardColorStyle = 'border-left: 4px solid #3b82f6;';
+        } else if (statusResolvido === 'Suspenso') {
+          cardColorStyle = 'border-left: 4px solid #f59e0b;';
+        } else if (statusResolvido === 'Concluído') {
+          cardColorStyle = 'border-left: 4px solid #64748b;';
+        }
+        
+        const card = document.createElement('div');
+        card.className = 'highlight-card';
+        if (cardColorStyle) card.setAttribute('style', cardColorStyle);
+        
+        // Exibe Nome do Evento (Nome amigável) destacado e Edital (Nome oficial) como subtítulo secundário
+        let highlightTitleHtml = '';
+        if (item.nomeEvento) {
+          highlightTitleHtml = `
+            <h3 class="highlight-event" title="${item.nomeEvento}">${item.nomeEvento}</h3>
+            <div class="highlight-subevent" title="${item.evento}">${item.evento}</div>
+          `;
+        } else {
+          highlightTitleHtml = `
+            <h3 class="highlight-event" title="${item.evento}">${item.evento}</h3>
+          `;
+        }
+        
+        card.innerHTML = `
+          <div>
+            <span class="highlight-badge ${statusClass}">${statusResolvido}</span>
+            <div class="highlight-cat">${item.categoria}</div>
+            ${highlightTitleHtml}
+            <div class="highlight-doc-title">
+              <i class="${iconData.icon} ${iconData.colorClass}"></i>
+              <span>${item.tituloDocumento}</span>
+            </div>
+          </div>
+          <div class="highlight-meta">
+            <span>Lançado em: <strong>${item.dataPublicacao}</strong></span>
+            <a href="${item.linkDocumento}" target="_blank" class="btn-download-highlight">
+              Acessar <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      
+      // Ajusta dinamicamente a visibilidade das setas do carrossel baseado no overflow real horizontal
+      setTimeout(atualizarVisibilidadeSetasCarrossel, 50);
+    }
+
+    function renderizarTabsAnos() {
+      const container = document.getElementById('year-tabs');
+      container.innerHTML = '';
+      
+      if (state.anos.length === 0) {
+        container.innerHTML = `<span style="font-size: 0.9rem; color: var(--text-light);">Planilha sem dados</span>`;
+        return;
+      }
+      
+      state.anos.forEach(ano => {
+        const btn = document.createElement('button');
+        btn.className = `tab-pill ${state.anoSelecionado === ano ? 'active' : ''}`;
+        btn.innerText = ano;
+        btn.onclick = () => selecionarAno(ano);
+        container.appendChild(btn);
+      });
+    }
+
+    function selecionarAno(ano) {
+      state.paginaAtualPublica = 1;
+      state.anoSelecionado = ano;
+      state.categoriaSelecionada = 'Todos';
+      
+      document.querySelectorAll('.tab-pill').forEach(btn => {
+        if (btn.innerText === ano) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      
+      processarCategoriasAno(ano);
+      renderizarChipsCategorias();
+      filtrarDados();
+    }
+
+    function processarCategoriasAno(ano) {
+      const categoriasSet = new Set(
+        state.db
+          .filter(item => item.ano === ano)
+          .map(item => item.categoria)
+      );
+      state.categorias = Array.from(categoriasSet).sort();
+    }
+
+    function renderizarChipsCategorias() {
+      const container = document.getElementById('category-filters');
+      container.innerHTML = '';
+      
+      if (state.categorias.length === 0) return;
+      
+      const btnTodos = document.createElement('button');
+      btnTodos.className = `filter-chip ${state.categoriaSelecionada === 'Todos' ? 'active' : ''}`;
+      btnTodos.innerText = 'Todos';
+      btnTodos.onclick = () => selecionarCategoria('Todos');
+      container.appendChild(btnTodos);
+      
+      state.categorias.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `filter-chip ${state.categoriaSelecionada === cat ? 'active' : ''}`;
+        btn.innerText = cat;
+        btn.onclick = () => selecionarCategoria(cat);
+        container.appendChild(btn);
+      });
+    }
+
+    function selecionarCategoria(cat) {
+      state.paginaAtualPublica = 1;
+      state.categoriaSelecionada = cat;
+      document.querySelectorAll('.filter-chip').forEach(btn => {
+        if (btn.innerText === cat) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      filtrarDados();
+    }
+
+    function filtrarDados() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      let filtrados = state.db.filter(item => item.ano === state.anoSelecionado);
+      
+      if (state.categoriaSelecionada !== 'Todos') {
+        filtrados = filtrados.filter(item => item.categoria === state.categoriaSelecionada);
+      }
+      
+      if (query !== '') {
+        filtrados = filtrados.filter(item => 
+          item.evento.toLowerCase().includes(query) ||
+          (item.nomeEvento && item.nomeEvento.toLowerCase().includes(query)) ||
+          item.descricaoEvento.toLowerCase().includes(query) ||
+          item.tituloDocumento.toLowerCase().includes(query) ||
+          item.categoria.toLowerCase().includes(query)
+        );
+      }
+      
+      const editaisAgrupados = agruparPorEvento(filtrados);
+      renderizarListaEditais(editaisAgrupados);
+    }
+
+    function agruparPorEvento(listaFlat) {
+      const agrupado = {};
+      
+      const parseDateStr = (dStr) => {
+        if (!dStr) return 0;
+        const parts = dStr.split('/');
+        if (parts.length === 3) {
+          return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10)).getTime();
+        }
+        return 0;
+      };
+
+      const parseDateTimeStr = (dtStr) => {
+        if (!dtStr) return 0;
+        const cleanStr = dtStr.trim();
+        const parts = cleanStr.split(' ');
+        const dateParts = parts[0].split('/');
+        if (dateParts.length !== 3) return 0;
+        
+        const day = parseInt(dateParts[0], 10);
+        const month = parseInt(dateParts[1], 10) - 1;
+        const year = parseInt(dateParts[2], 10);
+        
+        let hour = 0;
+        let minute = 0;
+        if (parts.length === 2) {
+          const timeParts = parts[1].split(':');
+          if (timeParts.length >= 2) {
+            hour = parseInt(timeParts[0], 10);
+            minute = parseInt(timeParts[1], 10);
+          }
+        }
+        return new Date(year, month, day, hour, minute).getTime();
+      };
+
+      const obterStatusScore = (status, prazoFinal, vigencia) => {
+        const resolved = resolverStatusEdital(status, prazoFinal, vigencia);
+        if (resolved === 'Aberto') return 1;
+        if (resolved === 'Em Andamento') return 2;
+        if (resolved === 'Suspenso') return 3;
+        if (resolved === 'Concluído') return 4;
+        return 5;
+      };
+
+      listaFlat.forEach(item => {
+        const key = item.evento;
+        const itemOrdem = parseInt(item.ordem, 10) || 999;
+        const itemDataTime = parseDateStr(item.dataPublicacao);
+        let itemDestaque = String(item.destaque || '').toUpperCase().trim() === "SIM";
+        if (itemDestaque) {
+          // Aplica a regra dos 30 dias de expiração ao status de destaque
+          const agoraTimestamp = new Date().getTime();
+          const limite30DiasMs = 30 * 24 * 60 * 60 * 1000;
+          let baseTimestamp = null;
+          
+          if (item.prazoFinal && item.prazoFinal.trim() !== '') {
+            baseTimestamp = parsePrazoFinal(item.prazoFinal);
+          } else {
+            baseTimestamp = parsePrazoFinal(item.dataPublicacao);
+          }
+          
+          if (baseTimestamp) {
+            const expiracaoTimestamp = baseTimestamp + limite30DiasMs;
+            if (agoraTimestamp > expiracaoTimestamp) {
+              itemDestaque = false; // Expirou o Destaque!
+            }
+          }
+        }
+
+        if (!agrupado[key]) {
+          agrupado[key] = {
+            evento: item.evento,
+            nomeEvento: item.nomeEvento || "",
+            ano: item.ano,
+            categoria: item.categoria,
+            descricaoEvento: item.descricaoEvento,
+            statusEvento: item.statusEvento,
+            ordem: itemOrdem,
+            maxDataTime: itemDataTime,
+            prazoFinal: item.prazoFinal || "", // Armazena o prazo limite do evento
+            vigencia: item.vigencia || "",     // Armazena a vigência do evento
+            temDestaque: itemDestaque,
+            documentos: []
+          };
+        } else {
+          // Mantém a menor ordem manual encontrada no grupo para preservar a prioridade manual do evento
+          if (itemOrdem < agrupado[key].ordem) {
+            agrupado[key].ordem = itemOrdem;
+          }
+          // Armazena a data de publicação mais recente do grupo para ordenar por última atualização
+          if (itemDataTime > agrupado[key].maxDataTime) {
+            agrupado[key].maxDataTime = itemDataTime;
+          }
+          // Mantém o prazo final mais longo/definido para o grupo para garantir ordenação correta por encerramento
+          if (item.prazoFinal && item.prazoFinal.trim() !== "") {
+            if (!agrupado[key].prazoFinal || agrupado[key].prazoFinal.trim() === "") {
+              agrupado[key].prazoFinal = item.prazoFinal;
+            } else {
+              const currentPrazoTime = parseDateTimeStr(agrupado[key].prazoFinal);
+              const itemPrazoTime = parseDateTimeStr(item.prazoFinal);
+              if (itemPrazoTime > currentPrazoTime) {
+                agrupado[key].prazoFinal = item.prazoFinal;
+              }
+            }
+          }
+          // Mantém a vigência mais longa/definida para o grupo
+          if (item.vigencia && item.vigencia.trim() !== "") {
+            if (!agrupado[key].vigencia || agrupado[key].vigencia.trim() === "") {
+              agrupado[key].vigencia = item.vigencia;
+            } else {
+              const currentVigenciaTime = parseDateTimeStr(agrupado[key].vigencia);
+              const itemVigenciaTime = parseDateTimeStr(item.vigencia);
+              if (itemVigenciaTime > currentVigenciaTime) {
+                agrupado[key].vigencia = item.vigencia;
+              }
+            }
+          }
+          // Se qualquer documento do evento for destaque, o grupo inteiro ganha destaque
+          if (itemDestaque) {
+            agrupado[key].temDestaque = true;
+          }
+        }
+        
+        agrupado[key].documentos.push({
+          id: item.id,
+          tituloDocumento: item.tituloDocumento,
+          linkDocumento: item.linkDocumento,
+          dataPublicacao: item.dataPublicacao,
+          dataTime: itemDataTime,
+          ordemDoc: itemOrdem,
+          prazoFinal: item.prazoFinal || "",
+          vigencia: item.vigencia || ""
+        });
+      });
+      
+      // Ordena a lista de eventos (sanfonas)
+      const listaAgrupada = Object.values(agrupado).sort((a, b) => {
+        // 1. Status: Ativos (Aberto, Em Andamento) primeiro, Concluídos/Suspensos depois
+        const scoreA = obterStatusScore(a.statusEvento, a.prazoFinal, a.vigencia);
+        const scoreB = obterStatusScore(b.statusEvento, b.prazoFinal, b.vigencia);
+        const ativoA = (scoreA <= 2) ? 1 : 0;
+        const ativoB = (scoreB <= 2) ? 1 : 0;
+        if (ativoA !== ativoB) {
+          return ativoB - ativoA; // Ativo primeiro
+        }
+        
+        // 2. Destaque: Eventos com destaque (temDestaque) primeiro no seu grupo de status
+        if (a.temDestaque !== b.temDestaque) {
+          return b.temDestaque ? 1 : -1;
+        }
+        
+        // 3. Ordem manual (menor primeiro)
+        if (a.ordem !== b.ordem) {
+          return a.ordem - b.ordem;
+        }
+        
+        // 4. Data de encerramento / Prazo (mais recente primeiro)
+        const prazoTimeA = parseDateTimeStr(a.prazoFinal);
+        const prazoTimeB = parseDateTimeStr(b.prazoFinal);
+        if (prazoTimeA !== prazoTimeB) {
+          return prazoTimeB - prazoTimeA; // Mais recente primeiro
+        }
+        
+        // 5. Data de publicação mais recente de documentos (mais recente primeiro)
+        return b.maxDataTime - a.maxDataTime;
+      });
+      
+      // Ordena os documentos dentro de cada evento
+      listaAgrupada.forEach(ev => {
+        ev.documentos.sort((a, b) => {
+          // Se as ordens forem diferentes, ordena por ordem (menor primeiro)
+          if (a.ordemDoc !== b.ordemDoc) {
+            return a.ordemDoc - b.ordemDoc;
+          }
+          // Se as ordens forem iguais, ordena de forma cronológica (data mais antiga primeiro)
+          return a.dataTime - b.dataTime;
+        });
+      });
+      
+      return listaAgrupada;
+    }
+
+    function buscarPublico() {
+      state.paginaAtualPublica = 1;
+      filtrarDados();
+    }
+
+    function mudarPaginaPublica(direcao) {
+      state.paginaAtualPublica += direcao;
+      filtrarDados();
+      document.getElementById('editais-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderizarListaEditais(editaisAgrupados) {
+      const container = document.getElementById('editais-container');
+      const emptyState = document.getElementById('editais-empty');
+      const paginationContainer = document.getElementById('public-pagination');
+      
+      container.innerHTML = '';
+      
+      if (editaisAgrupados.length === 0) {
+        container.style.display = 'none';
+        emptyState.style.display = 'block';
+        paginationContainer.style.display = 'none';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      container.style.display = 'flex';
+      
+      // Paginação: 5 eventos por página
+      const totalItens = editaisAgrupados.length;
+      const totalPaginas = Math.ceil(totalItens / state.itensPorPaginaPublica);
+      
+      if (state.paginaAtualPublica > totalPaginas) {
+        state.paginaAtualPublica = totalPaginas;
+      }
+      if (state.paginaAtualPublica < 1) {
+        state.paginaAtualPublica = 1;
+      }
+      
+      const inicio = (state.paginaAtualPublica - 1) * state.itensPorPaginaPublica;
+      const fim = inicio + state.itensPorPaginaPublica;
+      const itensPagina = editaisAgrupados.slice(inicio, fim);
+      
+      itensPagina.forEach((ev, idx) => {
+        const card = document.createElement('div');
+        card.className = `event-card ${ev.temDestaque ? 'has-destaque' : ''}`;
+        card.id = `event-card-${idx}`;
+        
+        // RESOLVE DINAMICAMENTE O STATUS DO EVENTO (Se expirado, vira Concluído automaticamente!)
+        const statusResolvido = resolverStatusEdital(ev.statusEvento, ev.prazoFinal, ev.vigencia);
+        
+        let statusClass = 'status-aberto';
+        if (statusResolvido === 'Em Andamento') statusClass = 'status-andamento';
+        else if (statusResolvido === 'Suspenso') statusClass = 'status-suspenso';
+        else if (statusResolvido === 'Concluído') statusClass = 'status-concluido';
+        
+        // HTML informativo do prazo se houver cadastrado
+        let deadlineHtml = '';
+        if (ev.prazoFinal) {
+          deadlineHtml = `
+            <div class="event-deadline-row">
+              <i class="fa-regular fa-clock"></i>
+              <span>Inscrições/Prazo até: <strong>${ev.prazoFinal}</strong></span>
+            </div>
+          `;
+        }
+        if (ev.vigencia) {
+          deadlineHtml += `
+            <div class="event-deadline-row" style="margin-top: 4px;">
+              <i class="fa-solid fa-hourglass-half" style="color: var(--accent);"></i>
+              <span>Vigência do Edital até: <strong>${ev.vigencia}</strong></span>
+            </div>
+          `;
+        }
+        
+        // Resolve os títulos do cabeçalho de forma premium: Nome do Evento (amigável) destacado
+        // e Edital/Chamamento (administrativo) como subtítulo organizado.
+        let headerTitlesHtml = '';
+        if (ev.nomeEvento) {
+          headerTitlesHtml = `
+            <h3 class="event-title">${ev.nomeEvento}</h3>
+            <div class="event-subtitle">${ev.evento}</div>
+          `;
+        } else {
+          headerTitlesHtml = `
+            <h3 class="event-title">${ev.evento}</h3>
+          `;
+        }
+        
+        card.innerHTML = `
+          <div class="event-header" onclick="toggleAccordion(${idx})">
+            <div class="event-header-left">
+              <div class="event-meta">
+                ${ev.temDestaque ? `<span class="event-destaque-badge"><i class="fa-solid fa-star"></i> Destaque</span>` : ''}
+                <span class="event-year-badge">${ev.ano}</span>
+                <span class="event-category-badge">${ev.categoria}</span>
+                <span class="status-badge ${statusClass}">${statusResolvido}</span>
+              </div>
+              ${headerTitlesHtml}
+              ${deadlineHtml}
+              <p class="event-description">${ev.descricaoEvento}</p>
+            </div>
+            <div class="event-header-right">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          
+          <div class="event-body">
+            <div class="event-body-content">
+              <div class="event-full-description">
+                <strong>Resumo da Chamada:</strong><br>
+                ${ev.descricaoEvento}
+                ${ev.prazoFinal ? `<br><br><i class="fa-regular fa-calendar-check" style="color:var(--accent);"></i> Prazo Limite Oficial de Atendimento: <strong>${ev.prazoFinal}</strong>` : ''}
+              </div>
+              
+              <div class="docs-list-title">
+                <i class="fa-regular fa-folder-open"></i> Arquivos e Links Associados (${ev.documentos.length})
+              </div>
+              
+              <div class="docs-table">
+                ${ev.documentos.map(doc => {
+                  const iconData = obterIconeArquivo(doc.linkDocumento, doc.tituloDocumento);
+                  return `
+                    <div class="doc-row">
+                      <div class="doc-info">
+                        <div class="doc-icon ${iconData.colorClass}">
+                          <i class="${iconData.icon}"></i>
+                        </div>
+                        <div class="doc-details">
+                          <span class="doc-title">${doc.tituloDocumento}</span>
+                          <div class="doc-meta">
+                            <span class="doc-date"><i class="fa-regular fa-calendar-days"></i> Lançado em ${doc.dataPublicacao}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <a href="${doc.linkDocumento}" target="_blank" class="btn-download-doc">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Acessar / Baixar
+                      </a>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Renderizar controles de paginação
+      if (totalPaginas > 1) {
+        paginationContainer.style.display = 'flex';
+        paginationContainer.innerHTML = `
+          <button class="pagination-btn" id="btn-pub-prev" ${state.paginaAtualPublica === 1 ? 'disabled' : ''} onclick="mudarPaginaPublica(-1)">
+            <i class="fa-solid fa-chevron-left"></i> Anterior
+          </button>
+          <span class="pagination-info">Página ${state.paginaAtualPublica} de ${totalPaginas}</span>
+          <button class="pagination-btn" id="btn-pub-next" ${state.paginaAtualPublica === totalPaginas ? 'disabled' : ''} onclick="mudarPaginaPublica(1)">
+            Próximo <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        `;
+      } else {
+        paginationContainer.style.display = 'none';
+      }
+    }
+
+    function toggleAccordion(index) {
+      const card = document.getElementById(`event-card-${index}`);
+      card.classList.toggle('expanded');
+    }
+
+
+    // --------------------------------------------------
+    // VISÃO ADMINISTRATIVA: LOGIN E CONTRÔLE DE ACESSO
+    // --------------------------------------------------
+    
+    function abrirModalLogin() {
+      if (state.usuarioLogado) {
+        exibirAreaAdmin(true);
+        return;
+      }
+      
+      const modal = document.getElementById('login-modal');
+      modal.classList.add('active');
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-senha').value = '';
+      document.getElementById('login-username').focus();
+    }
+    
+    function fecharModalLogin() {
+      document.getElementById('login-modal').classList.remove('active');
+    }
+    
+    function toggleSenhaVisualizacao() {
+      const input = document.getElementById('login-senha');
+      const icon = document.getElementById('password-toggle-icon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+    
+    function realizarLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-username').value.trim();
+      const pass = document.getElementById('login-senha').value.trim();
+      
+      if (!user || !pass) return;
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        exibirLoader(true);
+        google.script.run
+          .withSuccessHandler((respostaAuth) => {
+            exibirLoader(false);
+            if (respostaAuth.sucesso) {
+              if (respostaAuth.status === 'PENDENTE') {
+                abrirModalPrimeiroAcesso(respostaAuth.usuario, pass);
+                return;
+              }
+              
+              state.usuarioLogado = respostaAuth.usuario;
+              state.senhaLogado = pass;
+              state.nivelLogado = respostaAuth.nivel;
+              
+              fecharModalLogin();
+              exibirAreaAdmin(true);
+              renderizarTabelaAdmin();
+              
+              if (state.nivelLogado === 'ADMIN') {
+                carregarUsuariosServidor();
+              }
+              
+              showToast(`Logado como ${state.usuarioLogado} (${state.nivelLogado})!`, "success");
+            } else {
+              showToast(respostaAuth.mensagem || "Credenciais inválidas!", "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            exibirLoader(false);
+            showToast("Erro ao conectar para login: " + err.toString(), "error");
+          })
+          .validarLogin(user, pass);
+      } else {
+        // Mock local
+        if (user === "matheus" && pass === "turismo2026") {
+          state.usuarioLogado = user;
+          state.senhaLogado = pass;
+          state.nivelLogado = "ADMIN";
+          
+          fecharModalLogin();
+          exibirAreaAdmin(true);
+          renderizarTabelaAdmin();
+          
+          state.usersDb = [
+            { usuario: "matheus", senha: "xxx", nivel: "ADMIN", status: "ATIVO" },
+            { usuario: "editor", senha: "xxx", nivel: "EDITOR", status: "PENDENTE" }
+          ];
+          renderizarTabelaUsuarios();
+          
+          showToast(`Mock Logado como ${state.usuarioLogado} (${state.nivelLogado})!`, "success");
+        } else if (user === "editor" && pass === "turismo123") {
+          abrirModalPrimeiroAcesso(user, pass);
+        } else {
+          showToast("Acessos locais: matheus/turismo2026 ou editor/turismo123", "error");
+        }
+      }
+    }
+
+    function abrirModalPrimeiroAcesso(usuario, senhaProvisoria) {
+      document.getElementById('pa-usuario').value = usuario;
+      document.getElementById('pa-senha-provisoria').value = senhaProvisoria;
+      document.getElementById('pa-nova-senha').value = '';
+      document.getElementById('pa-confirmar-senha').value = '';
+      
+      fecharModalLogin();
+      
+      const modal = document.getElementById('primeiro-acesso-modal');
+      modal.classList.add('active');
+      document.getElementById('pa-nova-senha').focus();
+    }
+    
+    function fecharModalPrimeiroAcesso() {
+      document.getElementById('primeiro-acesso-modal').classList.remove('active');
+    }
+    
+    function toggleSenhaPA(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+    
+    function salvarNovaSenhaPrimeiroAcesso(e) {
+      e.preventDefault();
+      
+      const user = document.getElementById('pa-usuario').value;
+      const senhaProv = document.getElementById('pa-senha-provisoria').value;
+      const novaSenha = document.getElementById('pa-nova-senha').value.trim();
+      const confSenha = document.getElementById('pa-confirmar-senha').value.trim();
+      
+      if (novaSenha.length < 4) {
+        showToast("A nova senha deve ter pelo menos 4 caracteres!", "error");
+        return;
+      }
+      
+      if (novaSenha !== confSenha) {
+        showToast("As senhas digitadas não conferem!", "error");
+        return;
+      }
+      
+      const btn = document.getElementById('btn-submit-pa');
+      const textAnterior = btn.innerText;
+      btn.innerText = "Gravando...";
+      btn.disabled = true;
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        exibirLoader(true);
+        google.script.run
+          .withSuccessHandler((resposta) => {
+            exibirLoader(false);
+            btn.innerText = textAnterior;
+            btn.disabled = false;
+            
+            if (resposta.sucesso) {
+              fecharModalPrimeiroAcesso();
+              
+              // Define as credenciais ativas e loga o usuário diretamente
+              state.usuarioLogado = resposta.usuario;
+              state.senhaLogado = novaSenha; // Salva a nova senha ativa no state!
+              state.nivelLogado = resposta.nivel;
+              
+              exibirAreaAdmin(true);
+              renderizarTabelaAdmin();
+              
+              if (state.nivelLogado === 'ADMIN') {
+                carregarUsuariosServidor();
+              }
+              
+              showToast(resposta.mensagem, "success");
+            } else {
+              showToast(resposta.mensagem || "Erro ao configurar nova senha.", "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            exibirLoader(false);
+            btn.innerText = textAnterior;
+            btn.disabled = false;
+            showToast("Erro ao processar gravação: " + err.toString(), "error");
+          })
+          .definirNovaSenha(user, senhaProv, novaSenha);
+      } else {
+        // Mock local
+        setTimeout(() => {
+          btn.innerText = textAnterior;
+          btn.disabled = false;
+          
+          fecharModalPrimeiroAcesso();
+          
+          state.usuarioLogado = user;
+          state.senhaLogado = novaSenha;
+          state.nivelLogado = (user === "matheus") ? "ADMIN" : "EDITOR";
+          
+          exibirAreaAdmin(true);
+          renderizarTabelaAdmin();
+          
+          showToast("Senha alterada localmente com sucesso! (Mock)", "success");
+        }, 800);
+      }
+    }
+
+    // --- SEGURANÇA E PREVENÇÃO DE ERROS DE DIGITAÇÃO NO CADASTRO DE MULTIDOCUMENTOS ---
+    function obterEventosUnicos() {
+      const eventosMap = {};
+      state.db.forEach(item => {
+        if (!eventosMap[item.evento]) {
+          eventosMap[item.evento] = {
+            evento: item.evento,
+            ano: item.ano,
+            categoria: item.categoria,
+            descricaoEvento: item.descricaoEvento,
+            statusEvento: item.statusEvento,
+            prazoFinal: item.prazoFinal || ""
+          };
+        }
+      });
+      return Object.values(eventosMap);
+    }
+
+    function obterCategoriasUnicas() {
+      const categoriasSet = new Set();
+      state.db.forEach(item => {
+        if (item.categoria) {
+          categoriasSet.add(item.categoria.trim());
+        }
+      });
+      return Array.from(categoriasSet).sort();
+    }
+
+    function obterNomesEventosUnicos() {
+      const nomesSet = new Set();
+      state.db.forEach(item => {
+        if (item.nomeEvento) {
+          nomesSet.add(item.nomeEvento.trim());
+        }
+      });
+      return Array.from(nomesSet).sort();
+    }
+
+    function atualizarDatalistCategorias() {}
+    function atualizarDatalistEventos() {}
+    function atualizarDatalistNomesEventos() {}
+
+    function configurarDropdownPersonalizado(inputId, obterOpcoesFn, callbackSelection) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      
+      input.removeAttribute('list');
+      
+      let dropdown = input.parentNode.querySelector('.custom-autocomplete-dropdown');
+      if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.className = 'custom-autocomplete-dropdown';
+        input.parentNode.appendChild(dropdown);
+      }
+      
+      function renderizarOpcoes(filtro = '') {
+        const opcoes = obterOpcoesFn();
+        const filtradas = [...new Set(opcoes)]
+          .filter(op => op && op.trim() !== "" && op.toLowerCase().includes(filtro.toLowerCase()))
+          .sort((a, b) => a.localeCompare(b));
+        
+        dropdown.innerHTML = '';
+        if (filtradas.length === 0) {
+          dropdown.style.display = 'none';
+          return;
+        }
+        
+        filtradas.forEach(opcao => {
+          const item = document.createElement('div');
+          item.className = 'custom-autocomplete-item';
+          item.innerText = opcao;
+          
+          item.onmousedown = (e) => {
+            e.preventDefault();
+            input.value = opcao;
+            dropdown.style.display = 'none';
+            if (callbackSelection) {
+              callbackSelection(opcao);
+            }
+          };
+          
+          dropdown.appendChild(item);
+        });
+        
+        dropdown.style.display = 'block';
+      }
+      
+      input.addEventListener('focus', () => {
+        renderizarOpcoes(input.value);
+      });
+      
+      input.addEventListener('input', () => {
+        renderizarOpcoes(input.value);
+      });
+      
+      input.addEventListener('blur', () => {
+        setTimeout(() => {
+          dropdown.style.display = 'none';
+        }, 220);
+      });
+    }
+
+    function configurarTodosDropdownsCustomizados() {
+      configurarDropdownPersonalizado('edit-categoria', () => {
+        const defaultCats = ['Turismo', 'Eventos', 'Geral'];
+        const dbCats = obterCategoriasUnicas();
+        return Array.from(new Set([...defaultCats, ...dbCats]));
+      });
+      
+      configurarDropdownPersonalizado('edit-nome-evento', () => {
+        return obterNomesEventosUnicos();
+      }, (val) => {
+        detectarPreenchimentoNomeEvento();
+      });
+      
+      configurarDropdownPersonalizado('edit-evento', () => {
+        const nomeEventoVal = document.getElementById('edit-nome-evento').value.trim();
+        if (nomeEventoVal) {
+          const matching = state.db
+            .filter(item => item.nomeEvento && item.nomeEvento.toLowerCase() === nomeEventoVal.toLowerCase())
+            .map(item => item.evento);
+          return Array.from(new Set(matching));
+        }
+        return obterEventosUnicos().map(ev => ev.evento);
+      }, (val) => {
+        detectarPreenchimentoEvento();
+      });
+      
+      configurarDropdownPersonalizado('edit-titulo-doc', () => {
+        const defaultTitles = [
+          'Edital de Abertura Oficial (PDF)',
+          'Ficha de Inscrição para download (Word)',
+          'Tabela de Tarifas de Ocupação de Espaço (Excel)',
+          'Link para Formulário de Inscrição Online (Web)',
+          'Resultado das Propostas Homologadas',
+          'Resultado Final'
+        ];
+        const dbTitles = [];
+        state.db.forEach(item => {
+          if (item.tituloDocumento) dbTitles.push(item.tituloDocumento.trim());
+        });
+        return Array.from(new Set([...defaultTitles, ...dbTitles]));
+      });
+    }
+
+    // --- FUNÇÕES DE SELETORES DE DATA/HORA REFORMULADOS ---
+
+    // ---- PRAZO FINAL (datetime-local) ----
+
+    function atualizarDisplayPrazo(valorFormatado) {
+      const span = document.getElementById('prazo-display-text');
+      if (!span) return;
+      if (valorFormatado) {
+        span.textContent = valorFormatado;
+        span.style.color = 'var(--text-dark)';
+        span.style.fontWeight = '600';
+      } else {
+        span.textContent = 'Clique para selecionar data e horário...';
+        span.style.color = 'var(--text-muted)';
+        span.style.fontWeight = 'normal';
+      }
+    }
+
+    function atualizarDisplayData(valorFormatado) {
+      const span = document.getElementById('data-display-text');
+      if (!span) return;
+      if (valorFormatado) {
+        span.textContent = valorFormatado;
+        span.style.color = 'var(--text-dark)';
+        span.style.fontWeight = '600';
+      } else {
+        span.textContent = 'Clique para selecionar a data...';
+        span.style.color = 'var(--text-muted)';
+        span.style.fontWeight = 'normal';
+      }
+    }
+
+    function atualizarDisplayVigencia(valorFormatado) {
+      const span = document.getElementById('vigencia-display-text');
+      if (!span) return;
+      if (valorFormatado) {
+        span.textContent = valorFormatado;
+        span.style.color = 'var(--text-dark)';
+        span.style.fontWeight = '600';
+      } else {
+        span.textContent = 'Clique para selecionar a vigência final...';
+        span.style.color = 'var(--text-muted)';
+        span.style.fontWeight = 'normal';
+      }
+    }
+
+    function sincronizarInputVigenciaComPicker() {
+      const input = document.getElementById('edit-vigencia');
+      const picker = document.getElementById('edit-vigencia-picker');
+      if (!input) return;
+      const val = input.value.trim();
+      
+      atualizarDisplayVigencia(val);
+      
+      if (!val) {
+        const hoje = new Date();
+        const y = hoje.getFullYear();
+        const m = String(hoje.getMonth() + 1).padStart(2, '0');
+        const d = String(hoje.getDate()).padStart(2, '0');
+        picker.value = `${y}-${m}-${d}T12:00`;
+        return;
+      }
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?$/;
+      const match = val.match(regex);
+      if (match) {
+        const hour = match[4] || '12';
+        const min = match[5] || '00';
+        picker.value = `${match[3]}-${match[2]}-${match[1]}T${hour}:${min}`;
+      } else {
+        const hoje = new Date();
+        const y = hoje.getFullYear();
+        const m = String(hoje.getMonth() + 1).padStart(2, '0');
+        const d = String(hoje.getDate()).padStart(2, '0');
+        picker.value = `${y}-${m}-${d}T12:00`;
+      }
+    }
+
+    function sincronizarPickerVigenciaComInput() {
+      const picker = document.getElementById('edit-vigencia-picker');
+      const input = document.getElementById('edit-vigencia');
+      if (!picker.value) return;
+      
+      const parts = picker.value.split('T');
+      const dateParts = parts[0].split('-');
+      let timePart = parts[1] || '12:00';
+      
+      if (timePart === '00:00') {
+        timePart = '12:00';
+        picker.value = `${parts[0]}T12:00`;
+      }
+      
+      const valorFormatado = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]} ${timePart}`;
+      input.value = valorFormatado;
+      atualizarDisplayVigencia(valorFormatado);
+      calcularHelperPrazo();
+    }
+
+    function ativarCalendarioVigencia() {
+      sincronizarInputVigenciaComPicker();
+      const picker = document.getElementById('edit-vigencia-picker');
+      if (picker && typeof picker.showPicker === 'function') {
+        try { picker.showPicker(); } catch (e) { console.warn("showPicker falhou: ", e); }
+      }
+    }
+
+    function ativarEdicaoVigencia() {}
+    function desativarEdicaoVigencia() {}
+
+    // Sincroniza o picker nativo com o valor de texto atual (para exibir o valor certo no calendario)
+    function sincronizarInputComPicker() {
+      const input = document.getElementById('edit-prazo-final');
+      const picker = document.getElementById('edit-prazo-final-picker');
+      if (!input) return;
+      const val = input.value.trim();
+      
+      // Sincroniza o display visual
+      atualizarDisplayPrazo(val);
+      
+      if (!val) {
+        const hoje = new Date();
+        const y = hoje.getFullYear();
+        const m = String(hoje.getMonth() + 1).padStart(2, '0');
+        const d = String(hoje.getDate()).padStart(2, '0');
+        picker.value = `${y}-${m}-${d}T12:00`;
+        return;
+      }
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?$/;
+      const match = val.match(regex);
+      if (match) {
+        const hour = match[4] || '12';
+        const min = match[5] || '00';
+        picker.value = `${match[3]}-${match[2]}-${match[1]}T${hour}:${min}`;
+      } else {
+        const hoje = new Date();
+        const y = hoje.getFullYear();
+        const m = String(hoje.getMonth() + 1).padStart(2, '0');
+        const d = String(hoje.getDate()).padStart(2, '0');
+        picker.value = `${y}-${m}-${d}T12:00`;
+      }
+    }
+
+    // Chamado quando o usuario seleciona data/hora no calendario nativo
+    function sincronizarPickerComInput() {
+      const picker = document.getElementById('edit-prazo-final-picker');
+      const input = document.getElementById('edit-prazo-final');
+      if (!picker.value) return;
+      
+      const parts = picker.value.split('T');
+      const dateParts = parts[0].split('-');
+      let timePart = parts[1] || '12:00';
+      
+      if (timePart === '00:00') {
+        timePart = '12:00';
+        picker.value = `${parts[0]}T12:00`;
+      }
+      
+      const valorFormatado = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]} ${timePart}`;
+      input.value = valorFormatado;
+      atualizarDisplayPrazo(valorFormatado);
+      calcularHelperPrazo();
+    }
+
+    function ativarCalendarioPrazo() {
+      // Sincroniza o picker com o valor atual antes de abrir
+      sincronizarInputComPicker();
+      const picker = document.getElementById('edit-prazo-final-picker');
+      if (picker && typeof picker.showPicker === 'function') {
+        try { picker.showPicker(); } catch (e) { console.warn("showPicker falhou: ", e); }
+      }
+    }
+
+    function ativarEdicaoPrazo() {}
+    function desativarEdicaoPrazo() {}
+
+    // ---- DATA DE PUBLICACAO (date) ----
+
+    function sincronizarInputDataComPicker() {
+      const input = document.getElementById('edit-data');
+      const picker = document.getElementById('edit-data-picker');
+      if (!input) return;
+      const val = input.value.trim();
+      
+      // Sincroniza o display visual
+      atualizarDisplayData(val);
+      
+      if (!val) { picker.value = ''; return; }
+      const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+      const match = val.match(regex);
+      if (match) {
+        picker.value = `${match[3]}-${match[2]}-${match[1]}`;
+      } else {
+        picker.value = '';
+      }
+    }
+
+    function sincronizarPickerDataComInput() {
+      const picker = document.getElementById('edit-data-picker');
+      const input = document.getElementById('edit-data');
+      if (!picker.value) return;
+      const parts = picker.value.split('-');
+      if (parts.length === 3) {
+        const valorFormatado = `${parts[2]}/${parts[1]}/${parts[0]}`;
+        input.value = valorFormatado;
+        atualizarDisplayData(valorFormatado);
+      }
+    }
+
+    function ativarCalendarioData() {
+      sincronizarInputDataComPicker();
+      const picker = document.getElementById('edit-data-picker');
+      if (picker && typeof picker.showPicker === 'function') {
+        try { picker.showPicker(); } catch (e) { console.warn("showPicker falhou: ", e); }
+      }
+    }
+
+    function ativarEdicaoData() {}
+    function desativarEdicaoData() {}
+
+    function calcularProximaOrdem(eventoNome, nomeEventoAmigavel) {
+      let maxOrdem = 0;
+      state.db.forEach(item => {
+        let match = false;
+        if (eventoNome && item.evento.toLowerCase() === eventoNome.trim().toLowerCase()) {
+          match = true;
+        } else if (nomeEventoAmigavel && item.nomeEvento && item.nomeEvento.toLowerCase() === nomeEventoAmigavel.trim().toLowerCase()) {
+          match = true;
+        }
+        
+        if (match) {
+          const val = parseInt(item.ordem, 10);
+          if (!isNaN(val) && val > maxOrdem) {
+            maxOrdem = val;
+          }
+        }
+      });
+      return maxOrdem + 1;
+    }
+
+    function detectarPreenchimentoEvento() {
+      const inputEvento = document.getElementById('edit-evento');
+      const val = inputEvento.value.trim();
+      if (!val) return;
+      
+      // Não auto-preenche se estiver editando um documento existente (para permitir renomear)
+      if (document.getElementById('edit-id').value) return;
+      
+      // Procura se o evento existe nos dados carregados
+      const eventoExistente = state.db.find(item => item.evento.toLowerCase() === val.toLowerCase());
+      if (eventoExistente) {
+        // Preenche os outros campos comuns automaticamente
+        document.getElementById('edit-nome-evento').value = eventoExistente.nomeEvento || "";
+        document.getElementById('edit-ano').value = eventoExistente.ano;
+        document.getElementById('edit-categoria').value = eventoExistente.categoria;
+        document.getElementById('edit-descricao-evento').value = eventoExistente.descricaoEvento;
+        document.getElementById('edit-status').value = eventoExistente.statusEvento;
+        document.getElementById('edit-prazo-final').value = eventoExistente.prazoFinal || "";
+        document.getElementById('edit-vigencia').value = eventoExistente.vigencia || "";
+        
+        // Calcula a próxima ordem automaticamente
+        const proximaOrdem = calcularProximaOrdem(eventoExistente.evento, eventoExistente.nomeEvento);
+        document.getElementById('edit-ordem').value = proximaOrdem;
+        
+        // Sincroniza o seletor visual de prazo e vigencia
+        sincronizarInputComPicker();
+        sincronizarInputVigenciaComPicker();
+        
+        // Ativa reações reativas da data final
+        calcularHelperPrazo();
+        
+        showToast("ℹ️ Evento existente detectado! Os campos do evento foram preenchidos automaticamente para evitar erros de digitação.", "success");
+      }
+    }
+
+    function detectarPreenchimentoNomeEvento() {
+      const inputNomeEvento = document.getElementById('edit-nome-evento');
+      const val = inputNomeEvento.value.trim();
+      if (!val) return;
+      
+      // Não auto-preenche se estiver editando um documento existente (para permitir renomear)
+      if (document.getElementById('edit-id').value) return;
+      
+      // Procura todas as ocorrências de documentos vinculados a esse Nome do Evento
+      const matches = state.db.filter(item => item.nomeEvento && item.nomeEvento.trim().toLowerCase() === val.toLowerCase());
+      if (matches.length === 0) return;
+      
+      // Obter editais únicos dentre as correspondências
+      const uniqueEditais = Array.from(new Set(matches.map(item => item.evento.trim())));
+      
+      if (uniqueEditais.length === 1) {
+        // Apenas 1 edital para esse Nome do Evento - preencher tudo automaticamente
+        const eventoExistente = matches[0];
+        
+        document.getElementById('edit-evento').value = eventoExistente.evento;
+        document.getElementById('edit-ano').value = eventoExistente.ano;
+        document.getElementById('edit-categoria').value = eventoExistente.categoria;
+        document.getElementById('edit-descricao-evento').value = eventoExistente.descricaoEvento;
+        document.getElementById('edit-status').value = eventoExistente.statusEvento;
+        document.getElementById('edit-prazo-final').value = eventoExistente.prazoFinal || "";
+        document.getElementById('edit-vigencia').value = eventoExistente.vigencia || "";
+        
+        // Calcula a próxima ordem automaticamente
+        const proximaOrdem = calcularProximaOrdem(eventoExistente.evento, eventoExistente.nomeEvento);
+        document.getElementById('edit-ordem').value = proximaOrdem;
+        
+        // Sincroniza o seletor visual de prazo e vigencia
+        sincronizarInputComPicker();
+        sincronizarInputVigenciaComPicker();
+        
+        // Ativa reações reativas da data final
+        calcularHelperPrazo();
+        
+        showToast("ℹ️ Evento existente detectado! Os campos foram preenchidos automaticamente.", "success");
+      } else {
+        // Múltiplos editais encontrados para o mesmo Nome do Evento
+        // Limpar o campo de Edital
+        document.getElementById('edit-evento').value = "";
+        
+        // Preencher dados compartilhados a partir da primeira correspondência
+        const primeiroMatch = matches[0];
+        document.getElementById('edit-ano').value = primeiroMatch.ano || "";
+        document.getElementById('edit-categoria').value = primeiroMatch.categoria || "";
+        document.getElementById('edit-descricao-evento').value = primeiroMatch.descricaoEvento || "";
+        
+        // Limpar campos de detalhes específicos do documento/edital
+        document.getElementById('edit-status').value = "Aberto"; // padrão
+        document.getElementById('edit-prazo-final').value = "";
+        document.getElementById('edit-vigencia').value = "";
+        document.getElementById('edit-ordem').value = "";
+        
+        // Sincronizar e calcular helpers do prazo final (limpo)
+        sincronizarInputComPicker();
+        sincronizarInputVigenciaComPicker();
+        calcularHelperPrazo();
+        
+        showToast("💡 Múltiplos editais encontrados para este evento. Selecione o edital no campo abaixo.", "info");
+        
+        // Colocar foco no campo do Edital para que o usuário selecione/digite
+        setTimeout(() => {
+          const inputEv = document.getElementById('edit-evento');
+          inputEv.focus();
+        }, 100);
+      }
+    }
+    
+    function exibirAreaAdmin(exibir) {
+      const publicView = document.getElementById('public-view');
+      const adminView = document.getElementById('admin-view');
+      const toggleBtn = document.getElementById('btn-toggle-admin');
+      const userBadge = document.getElementById('user-badge');
+      const subTabs = document.getElementById('admin-sub-tabs');
+      
+      if (exibir) {
+        publicView.style.display = 'none';
+        adminView.style.display = 'block';
+        toggleBtn.innerHTML = `<i class="fa-solid fa-circle-chevron-left"></i> Voltar ao Portal`;
+        toggleBtn.onclick = () => exibirAreaAdmin(false);
+        
+        userBadge.innerText = `${state.usuarioLogado} [${state.nivelLogado}]`;
+        
+        if (state.nivelLogado === 'ADMIN') {
+          subTabs.style.display = 'flex';
+          switchAdminTab('editais');
+        } else {
+          subTabs.style.display = 'none';
+          document.getElementById('admin-tab-editais').style.display = 'block';
+          document.getElementById('admin-tab-usuarios').style.display = 'none';
+        }
+        
+        resetarFormulario();
+        
+      } else {
+        publicView.style.display = 'block';
+        adminView.style.display = 'none';
+        toggleBtn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Gerenciar Editais`;
+        toggleBtn.onclick = () => abrirModalLogin();
+        
+        carregarDadosServidor();
+      }
+    }
+    
+    function logoutAdmin() {
+      state.usuarioLogado = '';
+      state.senhaLogado = '';
+      state.nivelLogado = '';
+      exibirAreaAdmin(false);
+      showToast("Sessão finalizada.", "info");
+    }
+
+    function switchAdminTab(tabName) {
+      const tabEditaisBtn = document.getElementById('tab-editais-btn');
+      const tabUsuariosBtn = document.getElementById('tab-usuarios-btn');
+      const panelEditais = document.getElementById('admin-tab-editais');
+      const panelUsuarios = document.getElementById('admin-tab-usuarios');
+      
+      if (tabName === 'editais') {
+        tabEditaisBtn.classList.add('active');
+        tabUsuariosBtn.classList.remove('active');
+        panelEditais.style.display = 'block';
+        panelUsuarios.style.display = 'none';
+      } else {
+        tabEditaisBtn.classList.remove('active');
+        tabUsuariosBtn.classList.add('active');
+        panelEditais.style.display = 'none';
+        panelUsuarios.style.display = 'block';
+        renderizarTabelaUsuarios();
+      }
+    }
+
+    // --------------------------------------------------
+    // LIVE HELPER AWARENESS: CALCULO DE PRAZO REATIVO NO FORM
+    // --------------------------------------------------
+    
+    /**
+     * Calcula em tempo real o status que o portal assumirá com base no prazo digitado
+     */
+    function calcularHelperPrazo() {
+      const inputInscricoes = document.getElementById('edit-prazo-final');
+      const inputVigencia = document.getElementById('edit-vigencia');
+      const selectStatus = document.getElementById('edit-status');
+      const helper = document.getElementById('prazo-helper-info');
+      
+      const dataInscStr = inputInscricoes.value.trim();
+      const dataVigStr = inputVigencia.value.trim();
+      const statusManual = selectStatus.value;
+      
+      // Reseta visual padrão do alert box
+      helper.style.display = 'block';
+      helper.style.color = '#374151';
+      helper.style.background = '#f3f4f6';
+      helper.style.border = '1px solid #d1d5db';
+      
+      if (!dataInscStr && !dataVigStr) {
+        helper.innerHTML = `<span>ℹ️ Sem prazos definidos. O sistema assumirá o status manual <strong>"${statusManual}"</strong> selecionado acima.</span>`;
+        return;
+      }
+      
+      const agora = new Date().getTime();
+      
+      // Valida formato de vigência se houver
+      let timestampVig = null;
+      if (dataVigStr) {
+        timestampVig = parsePrazoFinal(dataVigStr);
+        if (timestampVig === null) {
+          helper.style.background = '#fef3c7';
+          helper.style.color = '#92400e';
+          helper.style.border = '1px solid #fcd34d';
+          helper.innerHTML = `<span>⚠️ Formato da data de <strong>Vigência</strong> inválido! Digite como <strong>dd/mm/aaaa hh:mm</strong> (Ex: 31/12/2026 18:00) ou apenas <strong>dd/mm/aaaa</strong>.</span>`;
+          return;
+        }
+      }
+      
+      // Valida formato de inscrições se houver
+      let timestampInsc = null;
+      if (dataInscStr) {
+        timestampInsc = parsePrazoFinal(dataInscStr);
+        if (timestampInsc === null) {
+          helper.style.background = '#fef3c7';
+          helper.style.color = '#92400e';
+          helper.style.border = '1px solid #fcd34d';
+          helper.innerHTML = `<span>⚠️ Formato da data de <strong>Inscrições</strong> inválido! Digite como <strong>dd/mm/aaaa hh:mm</strong> (Ex: 25/05/2026 18:00) ou apenas <strong>dd/mm/aaaa</strong>.</span>`;
+          return;
+        }
+      }
+      
+      // Se for override manual
+      if (statusManual === 'Suspenso' || statusManual === 'Concluído') {
+        helper.style.background = '#eef2f6';
+        helper.style.color = '#475569';
+        helper.style.border = '1px solid #cbd5e1';
+        helper.innerHTML = `<span>🔒 Override Ativo: O status manual está travado em <strong>"${statusManual}"</strong> e essa decisão manual prevalecerá sobre qualquer data limite.</span>`;
+        return;
+      }
+      
+      // 1. Verifica se a VIGÊNCIA já expirou (edital concluído)
+      if (timestampVig !== null && agora > timestampVig) {
+        helper.style.background = '#fee2e2';
+        helper.style.color = '#991b1b';
+        helper.style.border = '1px solid #fecaca';
+        helper.innerHTML = `<span>🔴 <strong>Vigência expirada!</strong> O portal alterará de forma automática o status do edital para <strong>"Concluído"</strong> no portal público.</span>`;
+        return;
+      }
+      
+      // 2. Verifica se o prazo de INSCRIÇÕES já expirou (passa para Em Andamento)
+      if (timestampInsc !== null && agora > timestampInsc) {
+        helper.style.background = '#e0f2fe';
+        helper.style.color = '#0369a1';
+        helper.style.border = '1px solid #bae6fd';
+        if (timestampVig !== null) {
+          const diff = timestampVig - agora;
+          const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const diffStr = `${dias} dias e ${horas} horas`;
+          helper.innerHTML = `<span>🔵 <strong>Prazo de inscrições encerrado!</strong> O portal exibirá o status <strong>"Em Andamento"</strong> (fase de seleção) por mais <strong>${diffStr}</strong> antes de concluir automaticamente ao fim da vigência.</span>`;
+        } else {
+          helper.innerHTML = `<span>🔵 <strong>Prazo de inscrições encerrado!</strong> Como o edital estava "Aberto", o portal alterará dinamicamente seu status para <strong>"Em Andamento"</strong> (fase de seleção). Para finalizá-lo por completo, defina uma data de Vigência ou mude o status para Concluído.</span>`;
+        }
+        return;
+      }
+      
+      // 3. Prazos ativos
+      helper.style.background = '#d1fae5';
+      helper.style.color = '#065f46';
+      helper.style.border = '1px solid #a7f3d0';
+      if (timestampInsc !== null) {
+        const diff = timestampInsc - agora;
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        helper.innerHTML = `<span>🟢 <strong>Prazo de inscrições ativo!</strong> O portal exibirá o status <strong>"Aberto"</strong> por mais <strong>${dias} dias e ${horas} horas</strong> antes de mudar automaticamente para <strong>"Em Andamento"</strong>.</span>`;
+      } else {
+        helper.innerHTML = `<span>🟢 <strong>Prazos em dia!</strong> O edital está sob status manual <strong>"${statusManual}"</strong>.</span>`;
+      }
+    }
+
+
+    // --------------------------------------------------
+    // PAINEL ADMINISTRATIVO: CRUD DE EDITAIS
+    // --------------------------------------------------
+    
+    function alternarGrupoAdmin(groupKey) {
+      state.collapsedGroups = state.collapsedGroups || {};
+      state.collapsedGroups[groupKey] = !state.collapsedGroups[groupKey];
+      
+      const icon = document.getElementById(`group-toggle-icon-${groupKey}`);
+      if (icon) {
+        if (state.collapsedGroups[groupKey]) {
+          icon.classList.add('collapsed');
+        } else {
+          icon.classList.remove('collapsed');
+        }
+      }
+      
+      document.querySelectorAll(`tr[data-group="${groupKey}"]`).forEach(row => {
+        if (state.collapsedGroups[groupKey]) {
+          row.style.setProperty('display', 'none', 'important');
+        } else {
+          row.style.display = '';
+        }
+      });
+    }
+
+    function aoMudarAgrupamentoAdmin() {
+      state.paginaAtualAdmin = 1;
+      renderizarTabelaAdmin();
+    }
+
+    function mudarPaginaAdmin(direcao) {
+      state.paginaAtualAdmin += direcao;
+      renderizarTabelaAdmin();
+      document.getElementById('admin-table-body').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function obterItensAdminFiltrados() {
+      const query = document.getElementById('admin-search-input').value.toLowerCase().trim();
+      
+      const parseDateStr = (dStr) => {
+        if (!dStr) return 0;
+        const parts = dStr.split('/');
+        if (parts.length === 3) {
+          return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10)).getTime();
+        }
+        return 0;
+      };
+
+      let baseList = [...state.db];
+      
+      // Ordena por data de publicação decrescente (mais recente primeiro) e ID decrescente
+      baseList.sort((a, b) => {
+        const tA = parseDateStr(a.dataPublicacao);
+        const tB = parseDateStr(b.dataPublicacao);
+        if (tB !== tA) return tB - tA;
+        return b.id.localeCompare(a.id);
+      });
+
+      if (query === '') {
+        return baseList;
+      }
+      return baseList.filter(item => 
+        item.ano.toLowerCase().includes(query) ||
+        item.categoria.toLowerCase().includes(query) ||
+        item.evento.toLowerCase().includes(query) ||
+        (item.nomeEvento && item.nomeEvento.toLowerCase().includes(query)) ||
+        item.tituloDocumento.toLowerCase().includes(query)
+      );
+    }
+
+    function renderizarPaginacaoAdmin(totalPaginas) {
+      const paginationContainer = document.getElementById('admin-pagination');
+      if (totalPaginas > 1) {
+        paginationContainer.style.display = 'flex';
+        paginationContainer.innerHTML = `
+          <button class="pagination-btn" id="btn-adm-prev" ${state.paginaAtualAdmin === 1 ? 'disabled' : ''} onclick="mudarPaginaAdmin(-1)">
+            <i class="fa-solid fa-chevron-left"></i> Anterior
+          </button>
+          <span class="pagination-info">Página ${state.paginaAtualAdmin} de ${totalPaginas}</span>
+          <button class="pagination-btn" id="btn-adm-next" ${state.paginaAtualAdmin === totalPaginas ? 'disabled' : ''} onclick="mudarPaginaAdmin(1)">
+            Próximo <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        `;
+      } else {
+        paginationContainer.style.display = 'none';
+      }
+    }
+
+    function renderizarTabelaAdmin() {
+      const tbody = document.getElementById('admin-table-body');
+      tbody.innerHTML = '';
+      
+      const itemsFiltrados = obterItensAdminFiltrados();
+      
+      if (itemsFiltrados.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-light);">Nenhum documento cadastrado</td></tr>`;
+        document.getElementById('admin-pagination').style.display = 'none';
+        return;
+      }
+      
+      state.collapsedGroups = state.collapsedGroups || {};
+      
+      const groupBySelect = document.getElementById('admin-group-by');
+      const groupBy = groupBySelect ? groupBySelect.value : 'evento'; // Por padrão, agrupa por evento
+      
+      function gerarLinhaDocumento(item, groupKey = '') {
+        const tr = document.createElement('tr');
+        tr.id = `admin-row-${item.id}`;
+        if (groupKey) {
+          tr.setAttribute('data-group', groupKey);
+          if (state.collapsedGroups[groupKey]) {
+            tr.style.setProperty('display', 'none', 'important');
+          }
+        }
+        
+        const statusResolvido = resolverStatusEdital(item.statusEvento, item.prazoFinal, item.vigencia);
+        
+        let badgeHtml = '';
+        if (statusResolvido === 'Aberto') badgeHtml = `<span class="status-badge status-aberto" style="display:inline-flex;">Aberto</span>`;
+        else if (statusResolvido === 'Em Andamento') badgeHtml = `<span class="status-badge status-andamento" style="display:inline-flex;">Andamento</span>`;
+        else if (statusResolvido === 'Suspenso') badgeHtml = `<span class="status-badge status-suspenso" style="display:inline-flex;">Suspenso</span>`;
+        else badgeHtml = `<span class="status-badge status-concluido" style="display:inline-flex;">Concluído</span>`;
+        
+        if (statusResolvido !== item.statusEvento) {
+          badgeHtml += `<span style="font-size:0.7rem; color:var(--text-muted); display:block; margin-top:2px;">⏱️ Expirado Auto.</span>`;
+        }
+        
+        const fileIcon = obterIconeArquivo(item.linkDocumento, item.tituloDocumento);
+        
+        tr.innerHTML = `
+          <td>
+            <div style="font-weight:700;">${item.ano}</div>
+            <div class="admin-table-meta">${item.categoria}</div>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span class="event-year-badge" style="font-size: 0.65rem; padding: 2px 6px; border-radius: 4px;">${item.ano}</span>
+              ${item.nomeEvento ? `<span style="font-size:0.75rem; color:var(--accent); font-weight:700; text-transform:uppercase;">🏷️ ${item.nomeEvento}</span>` : ''}
+            </div>
+            <div class="admin-table-title">${item.evento}</div>
+            <div class="admin-table-meta"><i class="${fileIcon.icon} ${fileIcon.colorClass}"></i> ${item.tituloDocumento}</div>
+            <div class="admin-table-meta" style="display: flex; align-items: center; gap: 4px; margin-top: 4px; flex-wrap: wrap;">
+              <span style="display: inline-flex; align-items: center; gap: 4px; color: var(--text-muted);"><i class="fa-regular fa-calendar-days"></i> Lançado em: <strong style="color: var(--text-dark);">${item.dataPublicacao}</strong></span>
+              ${item.ordem ? `<span style="margin-left: 8px; background: #e2e8f0; color: #475569; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.65rem;">Ordem: ${item.ordem}</span>` : ''}
+            </div>
+            ${item.prazoFinal ? `<div class="admin-table-meta" style="color:var(--accent); font-weight:600; display:inline-flex; align-items:center; gap:4px; margin-right:12px;"><i class="fa-regular fa-clock"></i> Inscrições: ${item.prazoFinal}</div>` : ''}
+            ${item.vigencia ? `<div class="admin-table-meta" style="color:var(--primary-light); font-weight:600; display:inline-flex; align-items:center; gap:4px;"><i class="fa-solid fa-hourglass-half"></i> Vigência: ${item.vigencia}</div>` : ''}
+          </td>
+          <td>
+            <div>${badgeHtml}</div>
+          </td>
+          <td>
+            <div class="admin-actions-cell">
+              <button class="btn-table-action btn-table-edit" onclick="prepararEdicao('${item.id}')" title="Editar registro">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              <button class="btn-table-action btn-table-delete" onclick="excluirEdital('${item.id}')" title="Excluir documento">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        return tr;
+      }
+      
+      if (groupBy === 'nenhum') {
+        const totalItens = itemsFiltrados.length;
+        const totalPaginas = Math.ceil(totalItens / state.itensPorPaginaAdminFlat);
+        
+        if (state.paginaAtualAdmin > totalPaginas) state.paginaAtualAdmin = totalPaginas;
+        if (state.paginaAtualAdmin < 1) state.paginaAtualAdmin = 1;
+        
+        const inicio = (state.paginaAtualAdmin - 1) * state.itensPorPaginaAdminFlat;
+        const fim = inicio + state.itensPorPaginaAdminFlat;
+        const itensPagina = itemsFiltrados.slice(inicio, fim);
+        
+        itensPagina.forEach(item => {
+          tbody.appendChild(gerarLinhaDocumento(item));
+        });
+        
+        renderizarPaginacaoAdmin(totalPaginas);
+      } else {
+        const grupos = {};
+        itemsFiltrados.forEach(item => {
+          let chaveGrupo = '';
+          if (groupBy === 'evento') {
+            chaveGrupo = item.nomeEvento ? item.nomeEvento.trim() : item.evento.trim();
+          } else if (groupBy === 'categoria') {
+            chaveGrupo = item.categoria ? item.categoria.trim() : 'Geral';
+          }
+          
+          if (!grupos[chaveGrupo]) {
+            grupos[chaveGrupo] = [];
+          }
+          grupos[chaveGrupo].push(item);
+        });
+        
+        const chavesOrdenadas = Object.keys(grupos).sort((a, b) => {
+          const anoA = grupos[a][0] ? parseInt(grupos[a][0].ano, 10) || 0 : 0;
+          const anoB = grupos[b][0] ? parseInt(grupos[b][0].ano, 10) || 0 : 0;
+          
+          if (anoB !== anoA) {
+            return anoB - anoA; // Ano mais recente primeiro
+          }
+          return a.localeCompare(b); // Ordem alfabética para o mesmo ano
+        });
+        
+        const totalItens = chavesOrdenadas.length;
+        const totalPaginas = Math.ceil(totalItens / state.itensPorPaginaAdminGrouped);
+        
+        if (state.paginaAtualAdmin > totalPaginas) state.paginaAtualAdmin = totalPaginas;
+        if (state.paginaAtualAdmin < 1) state.paginaAtualAdmin = 1;
+        
+        const inicio = (state.paginaAtualAdmin - 1) * state.itensPorPaginaAdminGrouped;
+        const fim = inicio + state.itensPorPaginaAdminGrouped;
+        const chavesPagina = chavesOrdenadas.slice(inicio, fim);
+        
+        chavesPagina.forEach(chaveGrupo => {
+          const docsGrupo = grupos[chaveGrupo];
+          const anoGrupo = docsGrupo[0] ? docsGrupo[0].ano : '';
+          const groupIdSafe = 'grp-' + encodeURIComponent(chaveGrupo).replace(/%[0-9A-F]{2}/g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
+          
+          // Por padrão os grupos iniciam colapsados (fechados)
+          if (state.collapsedGroups[groupIdSafe] === undefined) {
+            state.collapsedGroups[groupIdSafe] = true;
+          }
+          const isCollapsed = state.collapsedGroups[groupIdSafe];
+          
+          const trHeader = document.createElement('tr');
+          trHeader.className = 'admin-table-group-header';
+          trHeader.setAttribute('data-group-header', groupIdSafe);
+          trHeader.onclick = () => alternarGrupoAdmin(groupIdSafe);
+          
+          trHeader.innerHTML = `
+            <td colspan="4">
+              <i id="group-toggle-icon-${groupIdSafe}" class="fa-solid fa-chevron-down group-toggle-icon ${isCollapsed ? 'collapsed' : ''}"></i>
+              <span style="text-transform: uppercase; letter-spacing: 0.5px;">${groupBy === 'evento' ? '🏷️' : '📁'} ${chaveGrupo}</span>
+              ${anoGrupo ? `<span class="event-year-badge" style="font-size: 0.7rem; padding: 2px 6px; margin-left: 8px; border-radius: 4px; vertical-align: middle;">${anoGrupo}</span>` : ''}
+              <span class="admin-table-badge-count">${docsGrupo.length} ${docsGrupo.length === 1 ? 'documento' : 'documentos'}</span>
+            </td>
+          `;
+          tbody.appendChild(trHeader);
+          
+          docsGrupo.forEach(item => {
+            tbody.appendChild(gerarLinhaDocumento(item, groupIdSafe));
+          });
+        });
+        
+        renderizarPaginacaoAdmin(totalPaginas);
+      }
+    }
+    
+    function filtrarTabelaAdmin() {
+      state.paginaAtualAdmin = 1;
+      renderizarTabelaAdmin();
+    }
+
+    function salvarEdital(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('btn-salvar');
+      const anteriorTexto = btn.innerText;
+      btn.innerText = "Salvando...";
+      btn.disabled = true;
+      
+      const dados = {
+        id: document.getElementById('edit-id').value,
+        ano: document.getElementById('edit-ano').value,
+        categoria: document.getElementById('edit-categoria').value.trim(),
+        nomeEvento: document.getElementById('edit-nome-evento').value.trim(),
+        evento: document.getElementById('edit-evento').value.trim(),
+        descricaoEvento: document.getElementById('edit-descricao-evento').value.trim(),
+        statusEvento: document.getElementById('edit-status').value,
+        destaque: document.getElementById('edit-destaque').value,
+        tituloDocumento: document.getElementById('edit-titulo-doc').value.trim(),
+        linkDocumento: document.getElementById('edit-link-doc').value.trim(),
+        dataPublicacao: document.getElementById('edit-data').value.trim(),
+        ordem: document.getElementById('edit-ordem').value,
+        prazoFinal: document.getElementById('edit-prazo-final').value.trim(), // ENVIADO AO SERVIDOR GS
+        vigencia: document.getElementById('edit-vigencia').value.trim()        // ENVIADO AO SERVIDOR GS
+      };
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler((resposta) => {
+            btn.innerText = anteriorTexto;
+            btn.disabled = false;
+            
+            if (resposta.sucesso) {
+              showToast(resposta.mensagem, "success");
+              resetarFormulario();
+              carregarDadosServidor();
+            } else {
+              showToast(resposta.mensagem, "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            btn.innerText = anteriorTexto;
+            btn.disabled = false;
+            showToast("Erro ao processar gravação: " + err.toString(), "error");
+          })
+          .salvarRegistro(dados, state.usuarioLogado, state.senhaLogado);
+      } else {
+        // Local mock save
+        setTimeout(() => {
+          btn.innerText = anteriorTexto;
+          btn.disabled = false;
+          
+          if (dados.id) {
+            const index = state.db.findIndex(item => item.id === dados.id);
+            state.db[index] = dados;
+            showToast("Registro editado localmente!", "success");
+          } else {
+            dados.id = "ED-" + new Date().getTime();
+            state.db.push(dados);
+            showToast("Registro criado localmente!", "success");
+          }
+          
+          // PROPAGAÇÃO GLOBAL DE ATRIBUTOS DO EVENTO (Local Mock):
+          if (dados.evento) {
+            const eventoAlvo = dados.evento.trim().toLowerCase();
+            state.db.forEach(item => {
+              if (item.evento.trim().toLowerCase() === eventoAlvo) {
+                if (dados.statusEvento) item.statusEvento = dados.statusEvento;
+                if (dados.prazoFinal !== undefined) item.prazoFinal = dados.prazoFinal;
+                if (dados.vigencia !== undefined) item.vigencia = dados.vigencia;
+              }
+            });
+          }
+          
+          resetarFormulario();
+          processarAnos();
+          renderizarTabelaAdmin();
+          renderizarDestaques();
+          renderizarTabsAnos();
+          
+          // Recarrega datalists locais para refletir na hora novos eventos
+          atualizarDatalistEventos();
+          atualizarDatalistCategorias();
+          atualizarDatalistNomesEventos();
+        }, 800);
+      }
+    }
+
+    function prepararEdicao(id) {
+      const item = state.db.find(d => d.id === id);
+      if (!item) return;
+      
+      document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editar Lançamento`;
+      
+      document.getElementById('edit-id').value = item.id;
+      document.getElementById('edit-ano').value = item.ano;
+      document.getElementById('edit-categoria').value = item.categoria;
+      document.getElementById('edit-nome-evento').value = item.nomeEvento || "";
+      document.getElementById('edit-evento').value = item.evento;
+      document.getElementById('edit-descricao-evento').value = item.descricaoEvento;
+      document.getElementById('edit-status').value = item.statusEvento;
+      document.getElementById('edit-destaque').value = item.destaque;
+      document.getElementById('edit-titulo-doc').value = item.tituloDocumento;
+      document.getElementById('edit-link-doc').value = item.linkDocumento;
+      document.getElementById('edit-data').value = item.dataPublicacao;
+      document.getElementById('edit-ordem').value = item.ordem;
+      document.getElementById('edit-prazo-final').value = item.prazoFinal || "";
+      document.getElementById('edit-vigencia').value = item.vigencia || "";
+      
+      // Sincroniza os seletores visuais de data e vigencia
+      sincronizarInputComPicker();
+      sincronizarInputVigenciaComPicker();
+      sincronizarInputDataComPicker();
+      
+      document.getElementById('btn-salvar').innerText = "Atualizar Registro";
+      document.getElementById('btn-cancelar-edicao').style.display = 'block';
+      
+      // Simula feedback do prazo reativo
+      calcularHelperPrazo();
+      
+      document.getElementById('admin-tab-editais').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetarFormulario() {
+      document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-plus"></i> Novo Lançamento`;
+      document.getElementById('form-edital').reset();
+      document.getElementById('edit-id').value = '';
+      
+      const hoje = new Date();
+      const dataStr = ("0" + hoje.getDate()).slice(-2) + "/" + ("0" + (hoje.getMonth() + 1)).slice(-2) + "/" + hoje.getFullYear();
+      document.getElementById('edit-data').value = dataStr;
+      document.getElementById('edit-ano').value = hoje.getFullYear();
+      document.getElementById('edit-ordem').value = "1";
+      document.getElementById('edit-destaque').value = "NÃO";
+      document.getElementById('edit-vigencia').value = "";
+      
+      // Sincroniza os pickers com os valores resetados/padrões
+      sincronizarInputComPicker();
+      sincronizarInputVigenciaComPicker();
+      sincronizarInputDataComPicker();
+      
+      document.getElementById('btn-salvar').innerText = "Salvar Registro";
+      document.getElementById('btn-cancelar-edicao').style.display = 'none';
+      document.getElementById('prazo-helper-info').style.display = 'none';
+    }
+
+    function excluirEdital(id) {
+      const item = state.db.find(d => d.id === id);
+      if (!item) return;
+      
+      const confirmacao = confirm(`Atenção!\nVocê realmente deseja excluir o documento:\n"${item.tituloDocumento}"\ndo edital "${item.evento}"?\n\nEssa ação é irreversível.`);
+      if (!confirmacao) return;
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        exibirLoader(true);
+        google.script.run
+          .withSuccessHandler((resposta) => {
+            exibirLoader(false);
+            if (resposta.sucesso) {
+              showToast(resposta.mensagem, "success");
+              carregarDadosServidor();
+            } else {
+              showToast(resposta.mensagem, "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            exibirLoader(false);
+            showToast("Erro ao excluir: " + err.toString(), "error");
+          })
+          .excluirRegistro(id, state.usuarioLogado, state.senhaLogado);
+      } else {
+        state.db = state.db.filter(d => d.id !== id);
+        showToast("Excluído localmente com sucesso!", "success");
+        renderizarTabelaAdmin();
+        processarAnos();
+        renderizarDestaques();
+        renderizarTabsAnos();
+      }
+    }
+
+
+    // =========================================================================
+    // PAINEL ADMINISTRATIVO: GESTÃO DE USUÁRIOS
+    // =========================================================================
+    
+    function carregarUsuariosServidor() {
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler((respostaUsers) => {
+            if (respostaUsers.sucesso) {
+              state.usersDb = respostaUsers.usuarios;
+              renderizarTabelaUsuarios();
+            }
+          })
+          .obterUsuarios(state.usuarioLogado, state.senhaLogado);
+      }
+    }
+
+    function renderizarTabelaUsuarios() {
+      const tbody = document.getElementById('user-table-body');
+      tbody.innerHTML = '';
+      
+      if (state.usersDb.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Nenhum usuário cadastrado.</td></tr>`;
+        return;
+      }
+      
+      state.usersDb.forEach(user => {
+        const tr = document.createElement('tr');
+        
+        let statusBadgeClass = 'status-aberto'; // ATIVO
+        if (user.status === 'PENDENTE') {
+          statusBadgeClass = 'status-suspenso'; // Laranja/Suspenso
+        }
+        
+        tr.innerHTML = `
+          <td style="font-weight:700;"><i class="fa-regular fa-user"></i> ${user.usuario}</td>
+          <td><code>${user.senha}</code></td>
+          <td>
+            <span class="status-badge ${user.nivel === 'ADMIN' ? 'status-aberto' : 'status-andamento'}" style="display:inline-flex;">
+              ${user.nivel}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge ${statusBadgeClass}" style="display:inline-flex;">
+              ${user.status || 'ATIVO'}
+            </span>
+          </td>
+          <td>
+            <div class="admin-actions-cell">
+              <button class="btn-table-action btn-table-edit" onclick="prepararEdicaoUsuario('${user.usuario}')" title="Editar usuário">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              <button class="btn-table-action btn-table-delete" onclick="excluirUsuario('${user.usuario}')" title="Excluir usuário">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function salvarUsuario(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('btn-salvar-user');
+      btn.disabled = true;
+      btn.innerText = "Gravando...";
+      
+      const userDados = {
+        usuario: document.getElementById('user-username').value.trim(),
+        senha: document.getElementById('user-password').value.trim(),
+        nivel: document.getElementById('user-level').value
+      };
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        google.script.run
+          .withSuccessHandler((resposta) => {
+            btn.disabled = false;
+            btn.innerText = "Criar Usuário";
+            
+            if (resposta.sucesso) {
+              showToast(resposta.mensagem, "success");
+              resetarFormUsuario();
+              carregarUsuariosServidor();
+            } else {
+              showToast(resposta.mensagem, "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            btn.disabled = false;
+            btn.innerText = "Criar Usuário";
+            showToast("Erro ao gravar usuário: " + err.toString(), "error");
+          })
+          .salvarUsuario(userDados, state.usuarioLogado, state.senhaLogado);
+      } else {
+        // Local mock
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerText = "Criar Usuário";
+          
+          const index = state.usersDb.findIndex(u => u.usuario.toLowerCase() === userDados.usuario.toLowerCase());
+          if (index !== -1) {
+            state.usersDb[index] = userDados;
+            showToast("Usuário atualizado localmente!", "success");
+          } else {
+            state.usersDb.push(userDados);
+            showToast("Novo usuário adicionado localmente!", "success");
+          }
+          resetarFormUsuario();
+          renderizarTabelaUsuarios();
+        }, 600);
+      }
+    }
+
+    function prepararEdicaoUsuario(username) {
+      const u = state.usersDb.find(user => user.usuario === username);
+      if (!u) return;
+      
+      state.modoEdicaoUser = true;
+      document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-pen"></i> Editar Usuário`;
+      
+      const usernameInput = document.getElementById('user-username');
+      usernameInput.value = u.usuario;
+      usernameInput.disabled = true;
+      
+      document.getElementById('user-password').value = u.senha;
+      document.getElementById('user-level').value = u.nivel;
+      
+      document.getElementById('btn-salvar-user').innerText = "Atualizar Usuário";
+      document.getElementById('btn-cancelar-user').style.display = 'block';
+    }
+
+    function resetarFormUsuario() {
+      state.modoEdicaoUser = false;
+      document.getElementById('form-user-title').innerHTML = `<i class="fa-solid fa-user-plus"></i> Novo Usuário`;
+      document.getElementById('form-usuario').reset();
+      
+      const usernameInput = document.getElementById('user-username');
+      usernameInput.disabled = false;
+      
+      document.getElementById('btn-salvar-user').innerText = "Criar Usuário";
+      document.getElementById('btn-cancelar-user').style.display = 'none';
+    }
+
+    function excluirUsuario(username) {
+      if (String(username).toLowerCase() === String(state.usuarioLogado).toLowerCase()) {
+        showToast("Você não pode excluir a sua própria conta ativa!", "error");
+        return;
+      }
+      
+      const confirmacao = confirm(`Você realmente deseja excluir o usuário "${username}" do sistema?\nEste operador perderá o acesso imediatamente.`);
+      if (!confirmacao) return;
+      
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+        exibirLoader(true);
+        google.script.run
+          .withSuccessHandler((resposta) => {
+            exibirLoader(false);
+            if (resposta.sucesso) {
+              showToast(resposta.mensagem, "success");
+              carregarUsuariosServidor();
+            } else {
+              showToast(resposta.mensagem, "error");
+            }
+          })
+          .withFailureHandler((err) => {
+            exibirLoader(false);
+            showToast("Erro ao excluir usuário: " + err.toString(), "error");
+          })
+          .excluirUsuario(username, state.usuarioLogado, state.senhaLogado);
+      } else {
+        state.usersDb = state.usersDb.filter(u => u.usuario !== username);
+        showToast("Excluído localmente com sucesso!", "success");
+        renderizarTabelaUsuarios();
+      }
+    }
+
+
+    // --------------------------------------------------
+    // AUXILIARES DE ALERTA (TOASTS)
+    // --------------------------------------------------
+    function showToast(mensagem, tipo = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${tipo}`;
+      
+      let icon = 'fa-solid fa-circle-info';
+      if (tipo === 'success') icon = 'fa-solid fa-circle-check';
+      if (tipo === 'error') icon = 'fa-solid fa-triangle-exclamation';
+      
+      toast.innerHTML = `
+        <i class="${icon}"></i>
+        <span>${mensagem}</span>
+      `;
+      
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'toast-in 0.3s reverse forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
