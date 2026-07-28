@@ -363,10 +363,11 @@ function salvarRegistro(dados, usuario, senha) {
     }
     
     // PROPAGAÇÃO GLOBAL DE ATRIBUTOS DO EVENTO (Status, Inscrições, Vigência):
-    // Como estes atributos dizem respeito ao evento como um todo, atualizamos todas as outras
-    // linhas do mesmo evento na planilha para manter consistência global absoluta.
+    // Como estes atributos dizem respeito ao evento como um todo no seu ano específico,
+    // atualizamos apenas as outras linhas do MESMO EVENTO E MESMO ANO na planilha.
     if (dados.evento) {
       var eventoAlvo = String(dados.evento).trim().toLowerCase();
+      var anoAlvo = dados.ano ? String(dados.ano).trim() : "";
       var novoStatus = dados.statusEvento ? String(dados.statusEvento).trim() : null;
       var novoPrazo = dados.prazoFinal !== undefined ? String(dados.prazoFinal).trim() : null;
       var novaVigencia = dados.vigencia !== undefined ? String(dados.vigencia).trim() : null;
@@ -375,7 +376,10 @@ function salvarRegistro(dados, usuario, senha) {
       var updatedValues = range.getValues();
       
       for (var r = 1; r < updatedValues.length; r++) {
-        if (String(updatedValues[r][3]).trim().toLowerCase() === eventoAlvo) {
+        var eventoRow = String(updatedValues[r][3]).trim().toLowerCase();
+        var anoRow = String(updatedValues[r][1]).trim();
+        
+        if (eventoRow === eventoAlvo && (!anoAlvo || anoRow === anoAlvo)) {
           // 1. Propaga Status se fornecido
           if (novoStatus !== null && String(updatedValues[r][5]).trim() !== novoStatus) {
             sheet.getRange(r + 1, 6).setValue(novoStatus); // Coluna F

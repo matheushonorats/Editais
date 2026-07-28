@@ -2707,7 +2707,7 @@
       };
 
       listaFlat.forEach(item => {
-        const key = item.evento;
+        const key = `${item.ano || ''}_${item.evento || ''}`;
         const itemOrdem = parseInt(item.ordem, 10) || 999;
         const itemDataTime = parseDateStr(item.dataPublicacao);
         let itemDestaque = String(item.destaque || '').toUpperCase().trim() === "SIM";
@@ -4067,7 +4067,8 @@
         itemsFiltrados.forEach(item => {
           let chaveGrupo = '';
           if (groupBy === 'evento') {
-            chaveGrupo = item.nomeEvento ? item.nomeEvento.trim() : item.evento.trim();
+            const nomeBase = item.nomeEvento ? item.nomeEvento.trim() : item.evento.trim();
+            chaveGrupo = item.ano ? `${item.ano} - ${nomeBase}` : nomeBase;
           } else if (groupBy === 'categoria') {
             chaveGrupo = item.categoria ? item.categoria.trim() : 'Geral';
           }
